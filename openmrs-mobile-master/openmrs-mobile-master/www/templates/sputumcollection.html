@@ -1,0 +1,42 @@
+<ion-view>
+<ion-nav-title><span ng-show="!loading">{{ 'SPUTUM_COLLECTION_FORM' | translate }}</span><span ng-show="loading">Loading...</span></ion-nav-title>
+<ion-content delegate-handle="mainScroll" overflow-scroll="true">
+	<center><ion-spinner icon="dots" ng-show="loading"></ion-spinner></center>
+	<div ng-show="!loading">
+	<div class="card">
+		<div class="item item-divider item-text-wrap item-balanced">{{ 'BASIC' | translate }}</div>
+		<ion-item class="item-icon-left">
+		<ion-item class="item-icon-left" >
+			<i class="icon ion-person"></i>{{ 'NAME' | translate }}<p>{{ patient.person.names[0].givenName }}</p>
+		</ion-item>
+		<ion-item class="item-icon-left">
+			<i class="icon ion-person"></i>{{ 'SURNAME' | translate }} <p>{{ patient.person.names[0].familyName }}</p>
+		</ion-item>
+		<div class="item item-divider item-text-wrap" >{{ 'SAMPLE' | translate}}</div>
+		  <ion-radio name="sample" ng-model="collection.sample_num" value="1" selected>{{ 'SAMPLE1' | translate}}</ion-radio>
+		  <ion-radio name="sample" ng-model="collection.sample_num" value="2" >{{ 'SAMPLE2' | translate}}</ion-radio>
+		  <ion-radio name="sample" ng-model="collection.sample_num" value="3" >{{ 'SAMPLE3' | translate}}</ion-radio>
+	</div>
+	<div class="card">
+		<div class="item item-divider item-text-wrap item-balanced">{{ 'SPUTUM_DETAILS' | translate }}</div>
+		<ion-item class="item-icon-left">
+			<i class="icon ion-person"></i>{{ 'DATE_OF_COLLECTION' | translate }}<input ng-model="collection.sp_date" type="text" placeholder="{{ 'NAME' | translate }}" />
+		</ion-item>
+
+		<div class="item item-divider item-text-wrap" >{{ 'SPECIMEN_AGE' | translate}}</div>
+		  <ion-radio name="duration" ng-model="collection.specimen_time" value="{{TODAY}}" >{{ 'TODAY' | translate}}</ion-radio>
+		  <ion-radio name="duration" ng-model="collection.specimen_time" value="{{DAYs1}}" >{{ 'DAY1' | translate}}</ion-radio>
+		  <ion-radio name="duration" ng-model="collection.specimen_time" value="{{DAYs2}}" >{{ 'DAY2' | translate}}</ion-radio>
+		  <ion-radio name="duration" ng-model="collection.specimen_time" value="{{DAYs3}}" >{{ 'DAY3' | translate}}</ion-radio>
+		  <ion-radio name="duration" ng-model="collection.specimen_time" value="{{unknown}}" >{{ 'UNKNOWN' | translate}}</ion-radio>
+
+		<ion-item class="item-icon-left">
+			<i class="icon ion-person"></i>{{ 'LAB_TEST_ID' | translate }}<input ng-model="collection.lab_id" type="text" placeholder="{{ 'LAB_ID' | translate}}" />
+		</ion-item>
+
+	<ion-item class="item-icon-left">
+			<button class="button button-positive" ng-click="submit()" >Submit</button>  
+		</ion-item>
+	</div>
+</ion-content>
+</ion-view>

@@ -1,0 +1,54 @@
+<ion-view>
+<ion-nav-title><span ng-show="!loading">{{ patient.person.display }}</span><span ng-show="loading">Loading...</span></ion-nav-title>
+<ion-content delegate-handle="mainScroll" overflow-scroll="true">
+	<center><ion-spinner icon="dots" ng-show="loading"></ion-spinner></center>
+	<div ng-show="!loading">
+	<div class="card">
+		<div class="item item-divider item-text-wrap item-balanced">{{ 'BASIC' | translate }}</div>
+		<ion-item class="item-icon-left" >
+			<i class="icon ion-person"></i>{{ 'NAME' | translate }}<p>{{ patient.person.names[0].givenName }}</p>
+		</ion-item>
+		<ion-item class="item-icon-left">
+			<i class="icon ion-person"></i>{{ 'SURNAME' | translate }} <p>{{ patient.person.names[0].familyName }}</p>
+		</ion-item>
+		<div class="item item-divider item-text-wrap" >{{ 'RESULTS_NUM' | translate}}</div>
+		  <ion-radio name="sample" ng-model="collection.result_num" value="1" >{{ 'SAMPLE1' | translate}}</ion-radio>
+		  <ion-radio name="sample" ng-model="collection.result_num" value="2" >{{ 'SAMPLE2' | translate}}</ion-radio>
+		  <ion-radio name="sample" ng-model="collection.result_num" value="3" >{{ 'SAMPLE3' | translate}}</ion-radio>
+	</div>
+
+	<div class="card">
+		<div class="item item-divider item-text-wrap item-balanced">{{ 'DX_TEST' | translate }}</div>
+		<ion-radio name="test" ng-model="collection.dx_test" value="{{smear}}" selected>{{ 'SMEAR' | translate}}</ion-radio>
+		<ion-radio name="test" ng-model="collection.dx_test" value="{{genex}}" >{{ 'GENEX' | translate}}</ion-radio>
+	</div>
+
+	<div class="card">
+		<div class="item item-divider item-text-wrap item-balanced"ng-show="collection.dx_test === '{{smear}}'">{{ 'SMEAR_RESULTS' | translate }}</div>
+		<ion-radio name="sres" ng-model="collection.smear_result" value="{{Positive}}" >{{ 'POSITIVE' | translate}}</ion-radio>
+		<ion-radio name="sres" ng-model="collection.smear_result" value="{{Negative}}" selected>{{ 'NEGATIVE' | translate}}</ion-radio>
+		<ion-radio name="sres" ng-model="collection.smear_result" value="{{other}}" >{{ 'OTHER' | translate}}</ion-radio>
+	</div>
+
+	<div class="card">
+		<div class="item item-divider item-text-wrap item-balanced" ng-show="collection.dx_test === '{{genex}}'">{{ 'GENEX_RESULTS' | translate }}</div>
+		<ion-radio name="gres" ng-model="collection.gxp_result" value="{{Positive}}" ng-change="scrollResize()">{{ 'POSITIVE' | translate}}</ion-radio>
+		<ion-radio name="gres" ng-model="collection.gxp_result" value="{{Negative}}" ng-change="scrollResize()" selected>{{ 'NEGATIVE' | translate}}</ion-radio>
+		<ion-radio name="gres" ng-model="collection.gxp_result" value="{{other}}" ng-change="scrollResize()">{{ 'OTHER' | translate}}</ion-radio>
+	</div>
+
+	<div class="card" ng-show="collection.gxp_result === '{{Positive}}'">
+		<div class="item item-divider item-text-wrap item-balanced">{{ 'RIF_RESULTS' | translate }}</div>
+		<ion-radio name="rif" ng-model="collection.rif_result" value="{{rif_sensitive}}" >{{ 'RIF_SENSITIVE' | translate}}</ion-radio>
+		<ion-radio name="rif" ng-model="collection.rif_result" value="{{rif_resistant}}" >{{ 'RIF_RESISTANT' | translate}}</ion-radio>
+		<ion-radio name="rif" ng-model="collection.rif_result" value="{{unknown}}" selected>{{ 'UNKNOWN' | translate}}</ion-radio>
+	</div>
+
+	
+
+	<ion-item class="item-icon-left">
+			<button class="button button-positive" ng-click="submit()" >Submit</button>  
+		</ion-item>
+	</div>
+</ion-content>
+</ion-view>
