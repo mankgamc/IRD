@@ -29,7 +29,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
   });
 
   //UUIDs used
-  $rootScope.screener_id = 'bb141a7a-7b2a-4332-b016-64783fe08648';
+
   $rootScope.screening_encounter_uuid = 'cfbe3abd-f428-4da1-ae3e-9df7f88ec2f7';
   $rootScope.sputumcollection_encounter_uuid = 'aa7ed6f0-4008-4254-8faf-f3fce3333e06';
   $rootScope.sputumresults_encounter_uuid = 'ee805fb5-1450-479e-971a-fd70321c8986';
@@ -126,163 +126,59 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     LANG_pt: 'Portuguese',
     LANG_en: 'English',
 
-    // Menu
-    MENU_TITLE: 'Menu',
-    MENU_DASHBOARD : 'Dashboard',
-    MENU_SCREENING_TOOL : 'Screening Tool',
-    MENU_SPUTUM_COLLECTION : 'Sputum Collection',
-    MENU_SPUTUM_RESULTS : 'Sputum Results',
-    MENU_SEARCHPATIENTS : 'Search patients',
-    MENU_REGISTERPATIENT : 'Register a patient',
-    MENU_LOGOUT: 'Logout',
+    // Menú
+    MENU_TITLE: 'Menú',
+    MENU_DASHBOARD: 'Inicio',
+    MENU_SEARCHPATIENTS : 'Búsqueda de pacientes',
+    MENU_REGISTERPATIENT : 'Registrar un paciente',
+    MENU_LOGOUT: 'Cerrar sesión',
 
-    // Logging in
-    LOGIN_TITLE: 'OpenMRS Login',
-    LOGIN_HOST_LABEL: 'Host',
-    LOGIN_USERNAME_LABEL: 'Username',
-    LOGIN_PASSWORD_LABEL: 'Password',
+    // Inicio de sesión
+    LOGIN_TITLE : 'Sesión de OpenMRS',
+    LOGIN_HOST_LABEL: 'Servidor',
+    LOGIN_USERNAME_LABEL: 'Usuario',
+    LOGIN_PASSWORD_LABEL: 'Cortaseña',
 
-    // Logging in: errors
-    LOGIN_ERROR_TITLE:'Error logging in to',
-    LOGIN_ERROR_WRONGUSERPASSWORD: 'Invalid username or password.',
-    LOGIN_ERROR_WRONGHOST: 'Invalid host. Have you include?',
-    LOGIN_ERROR_SESSION: 'You are already logged in! If this is incorrect, try restarting your browser.',
+    // Inicio de sesión: errores
+    LOGIN_ERROR_TITLE:'Error al iniciar sesión en el servidor',
+    LOGIN_ERROR_WRONGUSERPASSWORD: 'Usuario o cortaseña inválida.',
+    LOGIN_ERROR_WRONGHOST: 'Servidor inválido. ¿Haz incluido el directorio /openmrs/ del servidor?',
+    LOGIN_ERROR_SESSION: '¡Usted ya está en una sesión! Si esto es incorrecto, intente reiniciar su navegador.',
 
-    // Logging out
-    LOGOUT_CONFIRM_TITLE:'Logging out',
-    LOGOUT_CONFIRM_MESSAGE: 'Are you sure you want to log out?.',
+    // Finalización de la sesión
+    LOGOUT_CONFIRM_TITLE:'Cerrando sesión',
+    LOGOUT_CONFIRM_MESSAGE: '¿Seguro que desea cerrar sesión?.',
+    LOGOUT_CONFIRM_CANCEL: 'Cancelar',
 
-    // Dashboard
-    DASH_WELCOME: 'Welcome',
-    DASH_CONNECTED: 'You are currently connected to',
+    // Inicio
+    DASH_TITLE: 'Inicio',
+    DASH_WELCOME: 'Bienvenido',
+    DASH_CONNECTED: 'Usted está actualmente conectado a',
 
-    // Search patients
-    SEARCHPATIENTS_TITLE: 'Patients',
-    SEARCHPATIENTS_AGE: 'Aged',
+    // Búsqueda de pacientes
+    SEARCHPATIENTS_TITLE: 'Pacientes',
+    SEARCHPATIENTS_AGE: 'Edad:',
 
-    // Patient details
+    // Detalles de pacientes
     PATIENT_EXPIRED: 'Patient expired',
 
-    YES:'Sim',
-    NO:'Nao',
-    UNKNOWN:'Desconhecido',
-
-    // Word translations
-    BASIC: 'Basic',
-    NAME:'Primeiro Nome',
-    SURNAME:'Apelido',
-    GOVTID:'Numero do documento de Identificacao Governamental',
-    ESTIMATED: 'Estimated',
-    BIRTHDATE: 'Data de Nascimento',
-    AGE: 'Idade',
-    GENDER: 'Genero',
+    // Traducción de palabras
+    BASIC: 'Basico',
+    BIRTHDATE: 'Fecha de nacimiento',
+    ESTIMATED: 'Aproximada',
+    AGE: 'Edad',
+    GENDER: 'Sexo',
     MALE: 'Masculino',
-    FEMALE: 'Feminino',
-    LOCATION: 'Location',
-    COUNTRY: 'Country',
-    STATE: 'State',
-    PROVINCE: 'Province',
-    CITY: 'City',
-    ADDRESS: 'Endereco de Residencia',
-    POSTAL: 'Postal',
-    CANCEL: 'Cancel',
-    ACTION_SEARCH: 'Search',
-
-    //Occupation
-    OCCUPATION:'Ocupacao',
-    MINER: 'Mineiro',
-    EXMINER: 'Ex-mineiro',
-    FAMILYMINER: 'Membro de Familia de mineiro',
-    FAMILYEXMINER: 'Membro de Família de ex-mineiro',
-
-    //Mine Type
-    MINETYPE: 'Mine Type',
-    TYPE_OF_MINE: 'Which type of mine?',
-    ARTISINAL: 'Artisinal',
-    OPENPIT:'Open Pit',
-    UNDERGROUND: 'Underground',
-    TYPE_OF_MINERALS: 'Which type of minerals?',
-    COPPER: 'Copper',
-    MAGNESIUM: 'Magnessium',
-    IRONORE: 'Iron Ore',
-    GOLD: 'Gold',
-    COAL: 'Coal',
-    URANIUM: 'Uranium',
-    SANDSTONE: 'Sandstone Quarry',
-    DIAMOND: 'Diamond',
-    PLATINUM: 'Platinum',
-    TANZANITE: 'Tanzanite',
-    OTHER: 'Other',
-    MINEYEARS: 'Por quantos anos?',
-    MEDBENEFITEXAM: 'Tera feito exames de benefícios Medicos?',
-    CALLCOMPENSATION: 'Instrua o mineiro a telefonar para o numero gratis para informacoes sobre compensacao: 080 1000 240 (SO SE FOR UMA MINERADORA SUL AFRICANA)',
-    REFERMINER: 'Refira o mineiro ou ex-mineiro para um Centro Ocupacional de Servicos de Saude (OHSC) ',
-
-    //TB SYMPTOMS
-    TBSYMPTOMS:'Sintomas de TB',
-    COUGH: 'Tosse',
-    COUGHINGBLOOD:'Tosse de Sangue',
-    FEVER:'Febre',
-    NIGHTSWEATS:'Suores Noturnos Encharcados',
-    WEIGHTLOSS:'Perca de peso inexplicada',
-    FATIGUE:'Fraqueza e Fadiga',
-    APPETITELOSS:'Perca de Apetite',
-    CHESTPAIN:'Dor no peito/caixa toraxica',
-
-    //TB RISK
-    TBRISK:'Factores de Risco de TB',
-    TBCONTACT:'Terá estado em contacto com uma pessoa com TB??',
-    TREATEDTB: 'Terá sido tratado anteriormente para TB?',
-    HOWLONG: 'por quantos meses foi tratado anteriormente para tratamento de TB?',
-    DIABETESE: 'Tem Diabete?',
-    TOBACCO: 'Fuma algum tabaco/cigarro?',
-
-    //HIV
-    HIV: 'Questoes de HIV',
-    HIVTEST: 'Tera tido um teste de HIV nos ultimos 3 meses?',
-    DISCLOSE: 'Esta disposto a partilhar o seu estado serologico (HIV)?',
-    RESULTS: 'Qual foi o resultado do seu teste de HIV mais recente?',
-    ARV: 'Esta actualmente em TARV?',
-    HIVRETEST: 'Gostaria de fazer um teste de HIV?',
-
-    //Contact Information
-    PHONE1: 'Numero de Telefone 1',
-    PHONE2: 'Numero de Telefone 2',
-    PHONE1OWNER: 'A que pertence o telefone 1?',
-    PHONE2OWNER: 'A que pertence o telefone 2?',
-    MYSELF : 'Eu Mesmo',
-    OTHER_OWNER: 'Outra pessoa',
-    OTHER_NAME: 'Se outra pessoa, registe o nome do dono',
-    ADDRESS: 'Endereco de Residência',
-    LANDMARK: 'Ponto de Referencia perto de Casa',
-
-    PATIENTID: 'ID do Paciente',
-
-    //Sputum collection
-    SPUTUM_COLLECTION_FORM : 'Formulário de submissao de expectoracao',
-    SPECIMEN_AGE: 'Quando foi tirada a amostra do Escarro?',
-    SAMPLE1: 'Amostra 1',
-    SAMPLE2: 'Amostra 2',
-    SAMPLE3: 'Amostra 3',
-    SPUTUM_DETAILS: 'Detalhes do escarro',
-    DATE_OF_COLLECTION: 'Data da Recolha do Escarro',
-    TODAY: 'Local(Hoje)',
-    DAY1: 'A 1 dia',
-    DAY2: 'A 2 dias',
-    DAY3: 'A 3 ou mais dias',
-    LAB_TEST_ID: 'Lab Test ID',
-
-    //Sputum Results
-    RESULTS_NUM: 'Record the result for which sample?',
-    SMEAR:'Baciloscopia',
-    DX_TEST:'Diagnostico do Teste',
-    GENEX:'GeneXpert',
-    SMEAR_RESULTS:'Resultados de escarro',
-    POSITIVE:'Positive',
-    NEGATIVE:'Negative',
-    RIF_RESULTS:'Rif Results',
-    RIF_SENSITIVE:'Rif Sensitive',
-    RIF_RESISTANT:'Rif Resistant'
+    FEMALE: 'Femenino',
+    LOCATION: 'Localización',
+    COUNTRY: 'País',
+    STATE: 'Estado',
+    PROVINCE: 'Provincia',
+    CITY: 'Ciudad',
+    ADDRESS: 'Dirección',
+    POSTAL: 'Código postal',
+    CANCEL: 'Cancelar',
+    ACTION_SEARCH: 'Buscar'
   }).translations('sw', {
     // Languages
     LANG_sw: 'Kiswahili',
@@ -587,8 +483,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     RIF_RESISTANT:'Rif Resistant'
 
   })
-
-  $translateProvider.preferredLanguage('pt');
+  $translateProvider.preferredLanguage('en');
 
   $stateProvider
 

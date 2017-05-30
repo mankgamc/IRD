@@ -24,20 +24,20 @@
 	</div>
 
 	<div class="card">
-		<div class="item item-divider item-text-wrap item-balanced"ng-show="collection.dx_test === '{{smear}}'">{{ 'SMEAR_RESULTS' | translate }}</div>
+		<div class="item item-divider item-text-wrap item-balanced">{{ 'SMEAR_RESULTS' | translate }}</div>
 		<ion-radio name="sres" ng-model="collection.smear_result" value="{{Positive}}" >{{ 'POSITIVE' | translate}}</ion-radio>
 		<ion-radio name="sres" ng-model="collection.smear_result" value="{{Negative}}" selected>{{ 'NEGATIVE' | translate}}</ion-radio>
 		<ion-radio name="sres" ng-model="collection.smear_result" value="{{other}}" >{{ 'OTHER' | translate}}</ion-radio>
 	</div>
 
 	<div class="card">
-		<div class="item item-divider item-text-wrap item-balanced" ng-show="collection.dx_test === '{{genex}}'">{{ 'GENEX_RESULTS' | translate }}</div>
+		<div class="item item-divider item-text-wrap item-balanced">{{ 'GENEX_RESULTS' | translate }}</div>
 		<ion-radio name="gres" ng-model="collection.gxp_result" value="{{Positive}}" ng-change="scrollResize()">{{ 'POSITIVE' | translate}}</ion-radio>
 		<ion-radio name="gres" ng-model="collection.gxp_result" value="{{Negative}}" ng-change="scrollResize()" selected>{{ 'NEGATIVE' | translate}}</ion-radio>
 		<ion-radio name="gres" ng-model="collection.gxp_result" value="{{other}}" ng-change="scrollResize()">{{ 'OTHER' | translate}}</ion-radio>
 	</div>
 
-	<div class="card" ng-show="collection.gxp_result === '{{Positive}}'">
+	<div class="card" ng-show="collection.gxp_result === {{Positive}}">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'RIF_RESULTS' | translate }}</div>
 		<ion-radio name="rif" ng-model="collection.rif_result" value="{{rif_sensitive}}" >{{ 'RIF_SENSITIVE' | translate}}</ion-radio>
 		<ion-radio name="rif" ng-model="collection.rif_result" value="{{rif_resistant}}" >{{ 'RIF_RESISTANT' | translate}}</ion-radio>

@@ -30,12 +30,10 @@ angular.module('openmrs.services', [])
       success: function(res) { 
         res.passed = true;
         console.log(res);
-        
         handle(res); 
       },
       error: function(res) {
         res.passed = false; 
-        
         handle(res); 
       }
     });
@@ -259,7 +257,7 @@ angular.module('openmrs.services', [])
       return _host;
     },
     getLang: function() {
-      return _lang;
+      return 'en';
     },
     logout: function() {
       window.localStorage.removeItem('openmrs-host');

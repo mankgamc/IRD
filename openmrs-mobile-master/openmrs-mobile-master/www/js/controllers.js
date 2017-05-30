@@ -92,7 +92,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   }
 })
 
-.controller('ResultsCtrl', function($scope, $state, $translate, ApiService, $cordovaBarcodeScanner) {
+.controller('ResultsCtrl', function($scope, $state, ApiService, $cordovaBarcodeScanner) {
   // Should work without initializing.. for some reason it doesn't.
   $scope.searchpatients = [];
   $scope.searchpatients.query = '';
@@ -133,7 +133,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   });
 })
 
-.controller('CollectionCtrl', function($scope, $state, $translate, ApiService, $cordovaBarcodeScanner) {
+.controller('CollectionCtrl', function($scope, $state, ApiService, $cordovaBarcodeScanner) {
   // Should work without initializing.. for some reason it doesn't.
 
   $scope.searchpatients = [];
@@ -174,7 +174,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   });
 })
 
-.controller('PatientCtrl', function($scope, $stateParams, $translate, ApiService) {
+.controller('PatientCtrl', function($scope, $stateParams, ApiService) {
   $scope.patient = [];
 
   $scope.loading = true;
@@ -187,7 +187,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 
 
-.controller('NewPatientCtrl', function($scope, $stateParams, $translate, $rootScope, $cordovaGeolocation, $cordovaBarcodeScanner,$cordovaToast, $ionicScrollDelegate, $cordovaDatePicker, AuthService, ApiService) {
+.controller('NewPatientCtrl', function($scope, $stateParams, $rootScope, $cordovaGeolocation, $cordovaBarcodeScanner,$cordovaToast, $ionicScrollDelegate, $cordovaDatePicker, ApiService) {
 
   $scope.setSuspect = function(){
     if($scope.newpatient.cough === $scope.yes || $scope.newpatient.hemoptysis === $scope.yes || $scope.newpatient.fever === $scope.yes ||
@@ -216,8 +216,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     exminer: $rootScope.no,
     family_miner: $rootScope.no,
     family_exminer: $rootScope.no,
-    mbe: $rootScope.no,
-    patientid: 'ID'+new Date().getTime()
+    mbe: $rootScope.no
   };
 
   $scope.patientid = '';
@@ -392,7 +391,11 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
         //end of create patient
         $scope.submitloading = false;
         $scope.$apply();
-        
+        $cordovaToast.showLongBottom('From submitted').then(function(success) {
+            // success
+          }, function (error) {
+            // error
+          });
     });
 
     $scope.patientuuid = '';
@@ -421,19 +424,59 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   $scope.visits = [];
 })
 
-.controller('DashboardCtrl', function($scope, $rootScope, $translate) {
+.controller('DashboardCtrl', function($scope, $rootScope) {
+
+  $scope.data = {
+    model: null,
+    availableOptions: [
+      {"name":"Ntlhontlo", "value":"ntlo"},
+      {"name":"Qembu", "value":"qembu"}
+    ]
+   };
 
   $scope.districts = [
-  {"name":"Xia-Xia", "value":"mhlontlo"},
-  {"name":"Guija", "value":"nyandeni"}
+  {"name":"Mhlontlo", "value":"mhlontlo"},
+  {"name":"Nyandeni", "value":"nyandeni"},
+   {"name":"Gamagara", "value":"Gamagara"},
+    {"name":"Gasegonyana", "value":"Gasegonyana"},
+	 {"name":"Joe Morolong", "value":"Morolong"}
   ];
 
-  $scope.facilities = [];
+  $scope.facilities = [{"name":"zenquka", "value": "23904785"},
+  {"name":"something", "value": "938745"}];
 
   $scope.mystuff = {district : '',location:''};
 
-
-
+  $scope.Gamagara = [
+  {"name":"Dingleton Clinic", "value": "97cd5524-0591-4f9e-a10a-c9118eb65e68"},
+  {"name":"Jan Witbooi Clinic", "value": "07d22579-e3a3-4f24-9fff-bc4aebdd2b25"},
+  {"name":"Kathu Clinic", "value": "700391f2-4f22-48c6-b703-667a04fd2136"},
+  {"name":"Katrina Koikoi Clinic", "value": "927dd537-16a8-4714-8e05-12b25f22e642"},
+  {"name":"Pako Seboko Clinic", "value": "8fc32cf3-53dc-41f7-ad94-2f5adc06165a"},
+  {"name":"UGM Wellness Clinic", "value": "f3ef9d04-66e9-4816-8ffd-4843b7296da5"}
+  ];
+  
+   $scope.Gasegonyana = [
+     {"name":"Bankhara Clinic", "value": "b9846c28-dc16-4a0d-92a3-009e318fde54"},
+	   {"name":"Bathopele Mobile Clinic", "value": "7d716607-db70-427e-9132-9808208e960e"},
+	     {"name":"Gateway Clinic", "value": "d5465e17-e35c-46cb-bbcf-39ee739a12f7"},
+		   {"name":"Gamopedi Clinic", "value": "4dfd43d4-d147-436c-86dd-6d0b2696f740"},
+		   {"name":"Kagiso CHC", "value": "0b07d1de-99b7-49c3-8ad0-905b1af57181"},
+		   {"name":"Keolopile Olepeng Clinic", "value": "8496af9d-9659-405c-aa9c-122e0798ebf8"},
+		   {"name":"Maruping Clinic", "value": "848c8b72-8b4f-4049-83d4-75d00fad357f"},
+		   {"name":"Seoding Clinic", "value": "47706a9f-4a3c-4311-b2ae-b8018262395e"},
+		   {"name":"Wrenchville Clinic", "value": "f09c35e7-c2c0-429c-96fa-0e93dc5751a6"}];
+		   
+    $scope.Morolong = [{"name":"Bothithong Clinic", "value": "a5252567-3a76-44a9-a653-93319f724170"},
+	{"name":"Cassel CHC", "value": "3e45c44e-40cd-44fb-9d51-6cff03995367"},
+	{"name":"Dithakong Clinic", "value": "c391ad3a-ed47-42b5-b1c3-e334bfb72d4b"},
+	{"name":"Gadiboe Clinic", "value": "2da65911-b9d1-45a1-9acb-d11eaf4de1c2"},
+	{"name":"Heuningvlei Clinic", "value": "8297e804-f019-428f-82fa-a5bff6e12d63"},
+	{"name":"Loopeng CHC", "value": "938e01f7-f3f4-4f41-aa95-2136a04733e6"},
+		{"name":"Manyeding Clinic", "value": "a0ac6e1a-ad3d-4765-a948-a043e319034e"},
+			{"name":"Tsineng Clinic", "value": "c682c65f-877c-40d9-b80f-06944d55f527"}];
+	
+	    
   $scope.nyandeni = [
   {"name":"Libode", "value": "baf7098f-5a6a-462e-aeaf-33c546614622"},
   {"name":"Majola", "value": "2c7ee756-4fe9-4d9e-a4e3-a3eceb76c5e5"},
@@ -456,24 +499,14 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   {"name":"Malepe-lepe", "value": "8d750af6-3b46-4fcf-8efc-3b9a221b03b1"}
   ];
 
-
-  $scope.xia = [
-  {"name":"Mariamo Muguabine", "value": "5c0f60f7-5a00-48f6-8f7c-0ef31392fb9e"},
-  {"name":"Patrice Lomumba", "value": "e1c93b49-e231-4b6f-bd22-57a999bea0eb"},
-  {"name":"Xai-Xai Cidade", "value": "49f985e2-f0a6-413e-a0bb-b77b7c79b2b5"}
-  ];
-
-  $scope.guija = [
-  {"name":"Canissado", "value": "0fe4de65-4a08-4517-a6ab-efecc6da4210"}
-  ];
-
-
   $scope.update = function(){
     if($scope.mystuff.district === "mhlontlo"){
-        $scope.facilities = $scope.xia;
+        $scope.facilities = $scope.mhlontlo;
+    }else if ($scope.mystuff.district === "nyandeni"){
+      $scope.facilities = $scope.nyandeni;
     }else{
-      $scope.facilities = $scope.guija;
-    }
+		$scope.facilities = $scope.Gamagara;
+	}
     console.log("DISTRICT value = "+$scope.district);
   };
 
@@ -485,7 +518,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 })
 
-.controller('SputumCollectionCtrl', function($scope, $stateParams, $translate, $rootScope, $cordovaBarcodeScanner, $ionicScrollDelegate, $cordovaDatePicker, ApiService) {
+.controller('SputumCollectionCtrl', function($scope, $stateParams, $rootScope, $cordovaBarcodeScanner, $ionicScrollDelegate, $cordovaDatePicker, ApiService) {
 
   $scope.collection = {
     sp_date: new Date(),
@@ -530,7 +563,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   
 })
 
-.controller('SputumResultsCtrl', function($scope, $stateParams, $translate, $rootScope, $cordovaBarcodeScanner, $ionicScrollDelegate, $cordovaDatePicker, ApiService) {
+.controller('SputumResultsCtrl', function($scope, $stateParams, $rootScope, $cordovaBarcodeScanner, $ionicScrollDelegate, $cordovaDatePicker, ApiService) {
   $scope.other = $rootScope.other;
   $scope.unknown = $rootScope.unknown;
   $scope.Negative = $rootScope.Negative;
