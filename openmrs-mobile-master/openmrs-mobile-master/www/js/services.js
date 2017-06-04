@@ -40,6 +40,15 @@ angular.module('openmrs.services', [])
   }
 
   this.post = function(host, endpoint, opts, data, handle) {
+	/*
+	
+	  alert(host);
+	  alert(btoa(opts['username'] + ':' + opts['password']));
+	  
+	  alert(host+'ws/rest/v1/'+endpoint);
+	  
+	  */
+	  
     console.log("Data : "+data);
     var async = true;
     var cache = false;
@@ -68,11 +77,13 @@ angular.module('openmrs.services', [])
       async: async,
       success: function(res) { 
         res.passed = true;
+		//alert ('patient added');       
         console.log(res);
         handle(res); 
       },
       error: function(res) {
         res.passed = false; 
+		//alert (res.status);
         handle(res); 
       }
     });
@@ -123,6 +134,7 @@ angular.module('openmrs.services', [])
   }
 
   this.createPatient = function(data, handle) { 
+  alert(data);
     return CallService.post(AuthService.getHost(), 'patient', {'username' : AuthService.getUsername(), 'password' : AuthService.getPassword()},
     data, function(res) {
       handle(res);

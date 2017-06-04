@@ -328,7 +328,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     
     ApiService.createPatient(angular.toJson($scope.patient), function(res) {
         //start createpatient
-        console.log("Response : "+res);
+      console.log("Response : "+res);
       $scope.patientResult = res;
       console.log("Response uuid : "+$scope.patientResult.uuid);
       $scope.observations.patient = $scope.patientResult.uuid;
@@ -391,8 +391,10 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
         //end of create patient
         $scope.submitloading = false;
         $scope.$apply();
-        $cordovaToast.showLongBottom('From submitted').then(function(success) {
+        $cordovaToast.showLongBottom('Form submitted').then(function(success) {
             // success
+		this.addNewPatientForm.reset();
+			
           }, function (error) {
             // error
           });
@@ -426,6 +428,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 .controller('DashboardCtrl', function($scope, $rootScope) {
 
+
   $scope.data = {
     model: null,
     availableOptions: [
@@ -442,11 +445,35 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 	 {"name":"Joe Morolong", "value":"Morolong"}
   ];
 
+  /*
   $scope.facilities = [{"name":"zenquka", "value": "23904785"},
   {"name":"something", "value": "938745"}];
+  */
+  
+   $scope.facilities = [];
+  
+
+/*  
+  $scope.countries = [{"name":"South Africa", "value": "South Africa"},
+  {"name":"Botswana", "value": "Botswana"},
+  {"name":"Angola", "value": "Angola"},
+    {"name":"Democratic Republic of Congo", "value": "Democratic Republic of Congo"},
+	  {"name":"Lesotho", "value": "Lesotho"},
+	    {"name":"Madagascar", "value": "Madagascar"},
+		  {"name":"Malawi", "value": "Malawi"},
+		    {"name":"Mauritius", "value": "Mauritius"},
+			  {"name":"Mozambique", "value": "Mozambique"},
+			    {"name":"Namibia", "value": "Namibia"},
+				  {"name":"Seychelles", "value": "Seychelles"},
+				    {"name":"United Republic of Tanzania", "value": "United Republic of Tanzania"},
+					  {"name":"Zambia", "value": "Zambia"},
+					   {"name":"Zimbabwe", "value": "Zimbabwe"}];*/
+  
 
   $scope.mystuff = {district : '',location:''};
 
+ // $scope.sadc = {countries : '',location:''};
+  
   $scope.Gamagara = [
   {"name":"Dingleton Clinic", "value": "97cd5524-0591-4f9e-a10a-c9118eb65e68"},
   {"name":"Jan Witbooi Clinic", "value": "07d22579-e3a3-4f24-9fff-bc4aebdd2b25"},
@@ -500,6 +527,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   ];
 
   $scope.update = function(){
+	  
     if($scope.mystuff.district === "mhlontlo"){
         $scope.facilities = $scope.mhlontlo;
     }else if ($scope.mystuff.district === "nyandeni"){

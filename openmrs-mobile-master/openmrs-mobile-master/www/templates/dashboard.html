@@ -7,21 +7,26 @@
 	  <p>{{ 'DASH_CONNECTED' | translate }} {{getHost()}}</p>
 	  </div>
     <div class="list">
+		
+        <div>
+        <h1 align="center">South Africa</h1>
+        </div>   
+	
     	<label class = "item item-input item-select">
         <div class = "input-label">
-          District
+          Select District
         </div>
         <select ng-model="mystuff.district" name="repeatSelect"  ng-change="update()" id="repeatSelect" >
-          <option ng-model="district" ng-repeat="option in districts" value="{{option.value}}">{{option.name}}</option>
+          <option ng-model="district" ng-repeat="option in districts | orderBy" value="{{option.value}}">{{option.name}}</option>
         </select>
       </label>
       
       <label class = "item item-input item-select">
         <div class = "input-label">
-          Facility
+          Select Facility
         </div>
         <select name="repeatSelects" id="repeatSelects" ng-change="checklocation()" ng-model="mystuff.location">
-          <option ng-repeat="options in facilities" value="{{options.value}}">{{options.name}}</option>
+          <option ng-repeat="options in facilities | orderBy" value="{{options.value}}">{{options.name}}</option>
         </select>
       </label>
 

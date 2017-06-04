@@ -3,29 +3,40 @@
 <ion-content delegate-handle="mainScroll" overflow-scroll="true">
 	<center><ion-spinner icon="dots" ng-show="loading"></ion-spinner></center>
 	<div ng-show="!loading">
-	<div class="list text-center " ng-show="patient.person.dead">
+	
+	<form name='addNewPatientForm'>
+	
+		<div class="list text-center " ng-show="patient.person.dead">
 		<div class="item item-light">{{ 'PATIENT_EXPIRED' | translate }}</div>
 	</div>
+	
 	<div class="card">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'BASIC' | translate }}</div>
 
 		<ion-item class="item-icon-left">
-			<i class="icon ion-person"></i>{{ 'SURNAME' | translate }}<input ng-model="names.familyName" type="text" placeholder="Surname"required/>
-		</ion-item>
+			<i class="icon ion-person"></i>{{ 'SURNAME' | translate }}<input name="Surname" ng-model="names.familyName" type="text" placeholder="Surname"required/>
+		</ion-item> <i class="icon ion-asterisk"></i> <span ng-show="addNewPatientForm.Surname.$error.required">
+			Complete the "Surname" before submission.
+		</span>
 		<ion-item class="item-icon-left">
-			<i class="icon ion-person"></i>{{ 'NAME' | translate }}<input ng-model="names.givenName" type="text" placeholder="{{ 'NAME' | translate }}" required/>
-		</ion-item>
+			<i class="icon ion-person"></i>{{ 'NAME' | translate }}<input name = "name" ng-model="names.givenName" type="text" placeholder="{{ 'NAME' | translate }}" required/>
+		</ion-item><i class="icon ion-asterisk"></i><span ng-show="addNewPatientForm.name.$error.required" >
+			Complete the "Name" before submission.
+		</span>
 		<ion-item class="item-icon-left">
-			<i class="icon ion-person"></i>{{ 'GOVTID' | translate }}<input ng-model="newpatient.govt_id" type="text" placeholder="Government ID" required/>
-		</ion-item>
+			<i class="icon ion-person"></i>{{ 'GOVTID' | translate }}<input  name = "GovernmentID" ng-model="newpatient.govt_id" type="text" placeholder="Government ID" required/>
+		</ion-item><i class="icon ion-asterisk"></i><span ng-show="addNewPatientForm.GovernmentID.$error.required" >
+			Complete the "Government ID" before submission.
+		</span>
 		<ion-item class="item-icon-left" >
 			<i class="icon ion-person"></i>{{ 'BIRTHDATE' | translate}}
-			<input ng-model="person.birthdate" type="date"  placeholder="{{ 'BIRTHDATE' | translate}}" required/>
-		</ion-item>
+			<input name = "BirthDate"  ng-model="person.birthdate" type="date"  placeholder="{{ 'BIRTHDATE' | translate}}" required/>
+		</ion-item><i class="icon ion-asterisk"></i><span ng-show="addNewPatientForm.BirthDate.$error.required" >
+			Complete the "BirthDate" before submission.
+		</span>
 		<ion-item class="item-icon-left">
 			<i class="icon ion-person"></i>{{ 'AGE' | translate }}<input type="number" ng-model="person.age" placeholder="age" required/>
-		</ion-item>
-		
+		</ion-item>	
 
 		<ion-item class="item-icon-left">
 			<i class="icon ion-transgender"></i>
@@ -33,7 +44,7 @@
 			    <div class="input-label">
 			      {{ 'GENDER' | translate}}
 			    </div>
-			    <select ng-model="person.gender">
+			    <select name = "gender" ng-model="person.gender">
 			      <option value="M">Male</option>
 			      <option value="F" selected>Female</option>
 			    </select>
@@ -43,26 +54,27 @@
 	</div>
 
 	<div class="card">
-		<div class="item item-divider item-text-wrap item-balanced">{{ 'OCCUPATION' | translate }}</div>
+	
+	<div class="item item-divider item-text-wrap item-balanced">{{ 'OCCUPATION' | translate }}</div>
 		<div class="item item-divider item-text-wrap" ng-init="newpatient.miner = '{{no}}'">{{ 'MINER' | translate}}</div>
 		  <ion-radio name="miner" ng-model="newpatient.miner" value="{{yes}}" >{{ 'YES' | translate}}</ion-radio>
 		  <ion-radio name="miner" ng-model="newpatient.miner" value="{{no}}" >{{ 'NO' | translate}}</ion-radio>
 		  <ion-radio name="miner" ng-model="newpatient.miner" value="{{unknown}}" >{{ 'UNKNOWN' | translate}}</ion-radio>
 
-		<div class="item item-divider item-text-wrap" ng-init="newpatient.exminer = '{{no}}'">{{ 'EXMINER' | translate}}</div>
-			  <ion-radio name="exminer" ng-model="newpatient.exminer" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
-			  <ion-radio name="exminer" ng-model="newpatient.exminer" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
-			  <ion-radio name="exminer" ng-model="newpatient.exminer" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
+		<div  ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" class="item item-divider item-text-wrap" ng-init="newpatient.exminer = '{{no}}'">{{ 'EXMINER' | translate}}</div>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="exminer" ng-model="newpatient.exminer" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="exminer" ng-model="newpatient.exminer" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="exminer" ng-model="newpatient.exminer" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 
-		<div class="item item-divider item-text-wrap" ng-init="newpatient.family_miner = '{{no}}'">{{ 'FAMILYMINER' | translate}}</div>
-			  <ion-radio name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
-			  <ion-radio name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
-			  <ion-radio name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
+		<div ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" class="item item-divider item-text-wrap" ng-init="newpatient.family_miner = '{{no}}'">{{ 'FAMILYMINER' | translate}}</div>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 				
-		<div class="item item-divider item-text-wrap" ng-init="newpatient.family_exminer = '{{no}}'">{{ 'FAMILYEXMINER' | translate}}</div>
-			  <ion-radio name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
-			  <ion-radio name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
-			  <ion-radio name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
+		<div ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" class="item item-divider item-text-wrap" ng-init="newpatient.family_exminer = '{{no}}'">{{ 'FAMILYEXMINER' | translate}}</div>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
+			  <ion-radio  ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
+			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 				
 	</div>
 
@@ -215,16 +227,16 @@
 			<div class="item item-divider item-text-wrap">{{ 'PHONE1OWNER' | translate}}</div>
 				  <ion-radio name="phone1" ng-model="ui.phone1myself" ng-value="true" selected>{{'MYSELF' | translate}}</ion-radio>
 				  <ion-radio name="phone1" ng-model="ui.phone1myself" ng-value="false" >{{'OTHER_OWNER' | translate}}</ion-radio>
-			<div ng-show="!ui.phone1myself" class="item item-divider item-text-wrap">{{ 'OTHER_NAME' | translate}}</div>
-			<input ng-show="!ui.phone1myself" ng-model="newpatient.phone1_owner" type="text">
+			<div ng-show="!ui.phone1myself" class="item item-divider item-text-wrap" >{{ 'OTHER_NAME' | translate}}</div>
+			<input ng-show="!ui.phone1myself" ng-model="newpatient.phone1_owner" type="text" placeholder= "Type Phone owner's name">
 		</ion-item>
-		<ion-item class="item-icon-left"> <span class="item-positive"><i class="icon ion-iphone"></i>{{ 'PHONE2' | translate }}
+		<ion-item class="item"> {{ 'PHONE2' | translate }}<i class="icon ion-iphone"></i>
 			<input ng-model="newpatient.phone2number" type="text" placeholder="Patient phone number">
 			<div class="item item-divider item-text-wrap">{{ 'PHONE2OWNER' | translate}}</div>
 				  <ion-radio name="phone2" ng-model="ui.phone2myself" ng-value="true" >{{'MYSELF' | translate}}</ion-radio>
 				  <ion-radio name="phone2" ng-model="ui.phone2myself" ng-value="false" >{{'OTHER_OWNER' | translate}}</ion-radio>
-			<div ng-show="!ui.phone2myself" class="item item-divider item-text-wrap">{{ 'OTHER_NAME' | translate}}</div>
-			<input ng-show="!ui.phone2myself" ng-model="newpatient.phone2_owner" type="text">
+			<div ng-show="!ui.phone2myself" class="item item-divider item-text-wrap" >{{ 'OTHER_NAME' | translate}}</div>
+			<input ng-show="!ui.phone2myself" ng-model="newpatient.phone2_owner" type="text" placeholder= "Type Phone owner's name" >
 		</ion-item>
 		<ion-item class="item-icon-left"> <i class="icon ion-ios-home"></i>{{ 'ADDRESS' | translate }}
 			<input ng-model="address.address1" type="text">
@@ -242,8 +254,12 @@
 	<div class="item item-divider item-text-wrap item-balanced"></div>
 	<center><ion-spinner icon="dots" ng-show="submitloading"></ion-spinner></center>
 	<ion-item class="item-icon-left">
-			<button class="button button-positive" ng-click="submit()" >Submit</button>  
+			<button ng-disabled="addNewPatientForm.$invalid" class ="button button-positive" ng-click="submit()" >Submit</button>  
 		</ion-item>
 	</div>
+	
+		</form >
+	
+
 </ion-content>
 </ion-view>
