@@ -134,7 +134,7 @@ angular.module('openmrs.services', [])
   }
 
   this.createPatient = function(data, handle) { 
-  alert(data);
+ // alert(data);
     return CallService.post(AuthService.getHost(), 'patient', {'username' : AuthService.getUsername(), 'password' : AuthService.getPassword()},
     data, function(res) {
       handle(res);

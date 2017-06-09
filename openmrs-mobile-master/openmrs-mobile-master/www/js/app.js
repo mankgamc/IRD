@@ -187,13 +187,13 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
 
     // Menu
     MENU_TITLE: 'Menu',
-    MENU_DASHBOARD : 'Dashboard',
-    MENU_SCREENING_TOOL : 'Screening Tool',
-    MENU_SPUTUM_COLLECTION : 'Sputum Collection',
-    MENU_SPUTUM_RESULTS : 'Sputum Results',
+    MENU_DASHBOARD : 'Mjumuiko wa viashilia',
+    MENU_SCREENING_TOOL : 'Fomu ya uchunguzi',
+    MENU_SPUTUM_COLLECTION : 'Ukusanyaji wa Makohozi',
+    MENU_SPUTUM_RESULTS : 'Majibu ya Makohozi',
     MENU_SEARCHPATIENTS : 'Search patients',
     MENU_REGISTERPATIENT : 'Register a patient',
-    MENU_LOGOUT: 'Logout',
+    MENU_LOGOUT: 'Kutoka',
 
     // Logging in
     LOGIN_TITLE: 'OpenMRS Login',
@@ -290,20 +290,20 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     CHESTPAIN:'Maumivu ya Kifua',
 
     //TB RISK
-    TBRISK:'TB RISK FACTORS',
+    TBRISK:'MAZINGIRA HATARI YA TB',
     TBCONTACT:'Have you been in close contact with a person with TB?',
-    TREATEDTB: 'Have you been treated for TB?',
+    TREATEDTB: 'Umeshawahi kutibiwa TB ?',
     HOWLONG: 'For how many months were you treated for TB?',
-    DIABETESE: 'Do you have Diabetes?',
-    TOBACCO: 'Do you smoke tobacco',
+    DIABETESE: 'Una ugonjwa wa kisukari ?',
+    TOBACCO: 'Unavuta Sigara  ?',
 
     //HIV
-    HIV: 'HIV Questions',
-    HIVTEST: 'Have you had an HIV Test in the past 3 months?',
+    HIV: 'Maswali ya HIV',
+    HIVTEST: 'Umeshawahi  kupima kipimo cha HIV kwa muda wa miezi 3 iliyopita ?',
     DISCLOSE: 'Are you willing to disclose your status?',
     RESULTS: 'What was the result of your most recent HIV test?',
     ARV: 'Are you currently on ART/ARVs?',
-    HIVRETEST: 'Would you like to have an HIV test?',
+    HIVRETEST: ' Je ungependa kupima  HIV  ?',
 
     //Contact Information
     PHONE1: 'Phone Number 1',

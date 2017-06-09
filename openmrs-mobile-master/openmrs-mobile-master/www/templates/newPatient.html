@@ -14,24 +14,24 @@
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'BASIC' | translate }}</div>
 
 		<ion-item class="item-icon-left">
-			<i class="icon ion-person"></i>{{ 'SURNAME' | translate }}<input name="Surname" ng-model="names.familyName" type="text" placeholder="Surname"required/>
-		</ion-item> <i class="icon ion-asterisk"></i> <span ng-show="addNewPatientForm.Surname.$error.required">
+			<i class="icon ion-person"></i>{{ 'SURNAME' | translate }} <span> </span><input name="Surname" ng-model="names.familyName" type="text" placeholder="Surname"required/>
+		</ion-item> <span ng-show="addNewPatientForm.Surname.$error.required">
 			Complete the "Surname" before submission.
 		</span>
 		<ion-item class="item-icon-left">
 			<i class="icon ion-person"></i>{{ 'NAME' | translate }}<input name = "name" ng-model="names.givenName" type="text" placeholder="{{ 'NAME' | translate }}" required/>
-		</ion-item><i class="icon ion-asterisk"></i><span ng-show="addNewPatientForm.name.$error.required" >
+		</ion-item><span ng-show="addNewPatientForm.name.$error.required" >
 			Complete the "Name" before submission.
 		</span>
 		<ion-item class="item-icon-left">
 			<i class="icon ion-person"></i>{{ 'GOVTID' | translate }}<input  name = "GovernmentID" ng-model="newpatient.govt_id" type="text" placeholder="Government ID" required/>
-		</ion-item><i class="icon ion-asterisk"></i><span ng-show="addNewPatientForm.GovernmentID.$error.required" >
+		</ion-item><span ng-show="addNewPatientForm.GovernmentID.$error.required" >
 			Complete the "Government ID" before submission.
 		</span>
 		<ion-item class="item-icon-left" >
 			<i class="icon ion-person"></i>{{ 'BIRTHDATE' | translate}}
 			<input name = "BirthDate"  ng-model="person.birthdate" type="date"  placeholder="{{ 'BIRTHDATE' | translate}}" required/>
-		</ion-item><i class="icon ion-asterisk"></i><span ng-show="addNewPatientForm.BirthDate.$error.required" >
+		</ion-item></i><span ng-show="addNewPatientForm.BirthDate.$error.required" >
 			Complete the "BirthDate" before submission.
 		</span>
 		<ion-item class="item-icon-left">
