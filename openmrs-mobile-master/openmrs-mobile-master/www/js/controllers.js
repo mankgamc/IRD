@@ -219,12 +219,12 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     mbe: $rootScope.no
   };
 
-  $scope.patientid = '';
+  $scope.patientid = ' ';
   $scope.address = {
-    address1: '',
-    address2: '',
-    longitude: '',
-    latitude: ''
+    address1: ' ',
+    address2: ' ',
+    longitude: ' ',
+    latitude: ' '
   };
   $scope.contacts = {
     
@@ -532,9 +532,16 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
         $scope.facilities = $scope.mhlontlo;
     }else if ($scope.mystuff.district === "nyandeni"){
       $scope.facilities = $scope.nyandeni;
-    }else{
+    }else if ($scope.mystuff.district === "Gamagara") {
 		$scope.facilities = $scope.Gamagara;
-	}
+	}else if ($scope.mystuff.district === "Gasegonyana")		
+		{
+			$scope.facilities = $scope.Gasegonyana;
+			
+		}else if ($scope.mystuff.district === "Morolong")	
+		{
+			$scope.facilities = $scope.Morolong;			
+		}
     console.log("DISTRICT value = "+$scope.district);
   };
 

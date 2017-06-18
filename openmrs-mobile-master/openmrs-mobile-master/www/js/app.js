@@ -137,7 +137,9 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     LOGIN_TITLE : 'Sesión de OpenMRS',
     LOGIN_HOST_LABEL: 'Servidor',
     LOGIN_USERNAME_LABEL: 'Usuario',
-    LOGIN_PASSWORD_LABEL: 'Cortaseña',
+    //LOGIN_PASSWORD_LABEL: 'Cortaseña',
+	LOGIN_PASSWORD_LABEL: 'Senha',	
+	
 
     // Inicio de sesión: errores
     LOGIN_ERROR_TITLE:'Error al iniciar sesión en el servidor',
