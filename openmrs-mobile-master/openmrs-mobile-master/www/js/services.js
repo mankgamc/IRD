@@ -168,18 +168,24 @@ angular.module('openmrs.services', [])
   this.curlang = $translate.use();
 
   this.setLang = function(lang) {
+	 
     $translate.use(lang);
     this.curlang = lang;
     AuthService.setLang(this.curlang);
+
+
     this.updateCtrlTranslations();
   }
 
   this.getLang = function() {
+	  //  alert(this.curlang);
     return this.curlang;
   }
 
   this.setLangToStored = function() {
     var lang = AuthService.getLang();
+	//alert(lang);
+	
     if(lang) {
       this.setLang(lang);
     }
@@ -242,8 +248,9 @@ angular.module('openmrs.services', [])
   }
 
   var setLang = function(lang) {
-    _lang = lang;
-    window.localStorage['openmrs-lang'] = JSON.stringify(_lang);
+    _lang = lang;		
+    window.localStorage['openmrs-lang'] = JSON.stringify(_lang);	
+	//alert( window.localStorage['openmrs-lang']);  
   }
 
 
@@ -269,7 +276,8 @@ angular.module('openmrs.services', [])
       return _host;
     },
     getLang: function() {
-      return 'en';
+     // return 'en';
+	return _lang;
     },
     logout: function() {
       window.localStorage.removeItem('openmrs-host');

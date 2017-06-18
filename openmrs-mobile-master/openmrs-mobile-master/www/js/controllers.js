@@ -16,8 +16,9 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     $state.go('app.dashboard');
   }
 
-  $scope.switchLanguage = function(lang) {
-    TranslationService.setLang(lang);
+  $scope.switchLanguage = function(lang) {	  
+	//	alert(lang);
+    TranslationService.setLang(lang);	
   }
 
 })
@@ -427,8 +428,6 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 })
 
 .controller('DashboardCtrl', function($scope, $rootScope) {
-
-
   $scope.data = {
     model: null,
     availableOptions: [

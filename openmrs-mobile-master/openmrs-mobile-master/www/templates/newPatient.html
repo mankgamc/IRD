@@ -246,8 +246,7 @@
 		<ion-item class="item-icon-left"> {{ 'PATIENTID' | translate }}
 			<input name= "qrCode" ng-model="newpatient.patientid" type="text" ng-init= "newpatient.patientid = ''" required />
 			<span ng-show="addNewPatientForm.qrCode.$error.required" >
-			Complete the "Scan QR Code" before submission.
-		</span>
+					</span>
 		</ion-item>
 		<ion-item class="item-icon-left"><button class="button button-positive" ng-click="scan()" >Scan QR</button></ion-item>	
 	
@@ -259,7 +258,5 @@
 	</div>
 	
 		</form >
-	
-
 </ion-content>
 </ion-view>

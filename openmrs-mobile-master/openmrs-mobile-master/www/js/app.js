@@ -40,7 +40,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
   $rootScope.no = '1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
   $rootScope.unknown = '1067AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
   $rootScope.other = '5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-  
+
   //Occupation
   $rootScope.miner = '78391f6e-b529-4b66-a7a2-3b07e8319dd7';
   $rootScope.exminer = '7ad762ff-954e-4e34-9d65-4b9ed0b92a07';
@@ -119,7 +119,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-  
+
   $translateProvider.translations('pt', {
     // Lenguajes
     LANG_sw: 'Kiswahili',
@@ -129,6 +129,9 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     // Menú
     MENU_TITLE: 'Menú',
     MENU_DASHBOARD: 'Inicio',
+	MENU_SCREENING_TOOL : 'Ferramenta de triagem',
+    MENU_SPUTUM_COLLECTION : 'Coleção de escarro',
+    MENU_SPUTUM_RESULTS : 'Resultados do escarro',
     MENU_SEARCHPATIENTS : 'Búsqueda de pacientes',
     MENU_REGISTERPATIENT : 'Registrar un paciente',
     MENU_LOGOUT: 'Cerrar sesión',
@@ -138,8 +141,8 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     LOGIN_HOST_LABEL: 'Servidor',
     LOGIN_USERNAME_LABEL: 'Usuario',
     //LOGIN_PASSWORD_LABEL: 'Cortaseña',
-	LOGIN_PASSWORD_LABEL: 'Senha',	
-	
+	LOGIN_PASSWORD_LABEL: 'Senha',
+
 
     // Inicio de sesión: errores
     LOGIN_ERROR_TITLE:'Error al iniciar sesión en el servidor',
@@ -162,11 +165,14 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     SEARCHPATIENTS_AGE: 'Edad:',
 
     // Detalles de pacientes
-    PATIENT_EXPIRED: 'Patient expired',
+    PATIENT_EXPIRED: 'O paciente expirou',
 
     // Traducción de palabras
     BASIC: 'Basico',
-    BIRTHDATE: 'Fecha de nacimiento',
+	NAME:'Nome',
+	 SURNAME:'SOBRENOME',
+	 GOVTID:'Governo ID',
+	 BIRTHDATE: 'Fecha de nacimiento',
     ESTIMATED: 'Aproximada',
     AGE: 'Edad',
     GENDER: 'Sexo',
@@ -180,7 +186,105 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     ADDRESS: 'Dirección',
     POSTAL: 'Código postal',
     CANCEL: 'Cancelar',
-    ACTION_SEARCH: 'Buscar'
+    ACTION_SEARCH: 'Buscar',
+
+	//Occupation
+    OCCUPATION:'Ocupação',
+    MINER: 'Você é mineiro?',
+    EXMINER: 'Você é ex-mineiro?',
+    FAMILYMINER: 'Você é um membro da família mineiro?',
+    FAMILYEXMINER: 'Você é um membro da família de ex-mineiro?',
+
+    //Mine Type
+    MINETYPE: 'Tipo de Mina',
+    TYPE_OF_MINE: 'Que tipo de mina?',
+    ARTISINAL: 'Artesanal',
+    OPENPIT:'Open Pit',
+    UNDERGROUND: 'Subterrâneo',
+    TYPE_OF_MINERALS: 'Que tipos de minerais?',
+    COPPER: 'Cobre',
+    MAGNESIUM: 'Magnésio',
+    IRONORE: 'Minério de ferro',
+    GOLD: 'Ouro',
+    COAL: 'Carvão',
+    URANIUM: 'Urânio',
+    SANDSTONE: 'Sandstone Quarry',
+    DIAMOND: 'Diamante',
+    PLATINUM: 'Platina',
+    TANZANITE: 'Tanzanite',
+    OTHER: 'De outros',
+    MINEYEARS: 'Quantos anos?',
+    MEDBENEFITEXAM: 'Você já fez exame de benefício médico?',
+    CALLCOMPENSATION: 'Instrua o mineiro para chamar este número gratuito para obter informações sobre compensação: 0801000240',
+    REFERMINER: 'Referir mineiro ao centro de serviços de saúde ocupacional',
+
+    //TB SYMPTOMS
+    TBSYMPTOMS:'Sintomas de tuberculose',
+    COUGH: 'Tosse',
+    COUGHINGBLOOD:'Sangue de tosse',
+    FEVER:'Febre',
+    NIGHTSWEATS:'Drenching suores noturnos',
+    WEIGHTLOSS:'Perda de peso inexplicada',
+    FATIGUE:'Fraqueza ou fadiga',
+    APPETITELOSS:'Perda de apetite',
+    CHESTPAIN:'Dor no peito',
+
+    //TB RISK
+    TBRISK:'FATORES DE RISCOS DE TB',
+    TBCONTACT:'Você esteve em contato direto com uma pessoa com TB??',
+    TREATEDTB: 'Você foi tratado por TB?',
+    HOWLONG: 'Por quantos meses você foi tratado por TB?',
+    DIABETESE: 'Você tem diabetes?',
+    TOBACCO: 'Você fuma tabaco?',
+
+    //HIV
+    HIV: 'Perguntas sobre o HIV',
+    HIVTEST: 'Você já teve um teste de HIV nos últimos 3 meses?',
+    DISCLOSE: 'Você está disposto a divulgar seu status?',
+    RESULTS: 'Qual foi o resultado do seu teste de HIV mais recente?',
+    ARV: 'Você está atualmente em ART / ARVs?',
+    HIVRETEST: 'Gostaria de ter um teste de HIV?',
+
+    //Contact Information
+    PHONE1: 'Número de telefone 1',
+    PHONE2: 'Número de telefone 2',
+    PHONE1OWNER: 'A quem pertence o número de telefone 1?',
+    PHONE2OWNER: 'A quem pertence o número de telefone 2?',
+    MYSELF : 'Eu mesmo',
+    OTHER_OWNER: 'Alguém',
+    OTHER_NAME: 'Se alguém, digite o nome do proprietário',
+    ADDRESS: 'Endereço residencial',
+    LANDMARK: 'Ponto de referência perto da casa',
+
+    PATIENTID: 'Identificação do paciente',
+
+    //Sputum collection
+    SPUTUM_COLLECTION_FORM : 'Sputum Formulário de Envio',
+    SPECIMEN_AGE: 'Quando o espécime tossiu?',
+    SAMPLE1: 'Amostra 1',
+    SAMPLE2: 'Amostra 2',
+    SAMPLE3: 'Amostra 3',
+    SPUTUM_DETAILS: 'Sputum Details',
+    DATE_OF_COLLECTION: 'Data da Coleção de Espúcio',
+    TODAY: 'Spot (hoje)',
+    DAY1: '1 dia atrás',
+    DAY2: '2 dia atrás',
+    DAY3: '3 dia atrás',
+    LAB_TEST_ID: 'Identificação do teste de laboratório',
+
+    //Sputum Results
+    RESULTS_NUM: 'Registre o resultado para qual amostra?',
+    SMEAR:'Esfolião',
+    DX_TEST:'Teste de diagnostico',
+    GENEX:'GeneXpert',
+    SMEAR_RESULTS:'Resultado do esfregaço de escarro',
+    POSITIVE:'Positivo',
+    NEGATIVE:'Negativo',
+    RIF_RESULTS:'Rif Resultados',
+    RIF_SENSITIVE:'Rif Sensível',
+    RIF_RESISTANT:'Rif Resistente'
+
+
   }).translations('sw', {
     // Languages
     LANG_sw: 'Kiswahili',
@@ -193,37 +297,37 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     MENU_SCREENING_TOOL : 'Fomu ya uchunguzi',
     MENU_SPUTUM_COLLECTION : 'Ukusanyaji wa Makohozi',
     MENU_SPUTUM_RESULTS : 'Majibu ya Makohozi',
-    MENU_SEARCHPATIENTS : 'Search patients',
-    MENU_REGISTERPATIENT : 'Register a patient',
+    MENU_SEARCHPATIENTS : 'Search wagonjwa',
+    MENU_REGISTERPATIENT : 'Register mgonjwa',
     MENU_LOGOUT: 'Kutoka',
 
     // Logging in
-    LOGIN_TITLE: 'OpenMRS Login',
+    LOGIN_TITLE: 'OpenMRS Ingia',
     LOGIN_HOST_LABEL: 'Host',
     LOGIN_USERNAME_LABEL: 'Jina la mtumiaji',
     LOGIN_PASSWORD_LABEL: 'Nywila',
     LOGIN: 'Ingia',
 
     // Logging in: errors
-    LOGIN_ERROR_TITLE:'Error logging in to',
-    LOGIN_ERROR_WRONGUSERPASSWORD: 'Invalid username or password.',
-    LOGIN_ERROR_WRONGHOST: 'Invalid host. Have you include?',
-    LOGIN_ERROR_SESSION: 'You are already logged in! If this is incorrect, try restarting your browser.',
+    LOGIN_ERROR_TITLE:'Kosa magogo kwenye.',
+    LOGIN_ERROR_WRONGUSERPASSWORD: 'Jina batili la mtumiaji au nenosiri.',
+    LOGIN_ERROR_WRONGHOST: 'Jeshi batili.',
+    LOGIN_ERROR_SESSION: 'Tayari umeingia.',
 
     // Logging out
-    LOGOUT_CONFIRM_TITLE:'Logging out',
-    LOGOUT_CONFIRM_MESSAGE: 'Are you sure you want to log out?.',
+    LOGOUT_CONFIRM_TITLE:'Magogo nje',
+    LOGOUT_CONFIRM_MESSAGE: 'Una uhakika unataka kuingia nje?',
 
     // Dashboard
-    DASH_WELCOME: 'Welcome',
-    DASH_CONNECTED: 'You are currently connected to',
+    DASH_WELCOME: 'Karibu',
+    DASH_CONNECTED: 'Kwa sasa kushikamana na',
 
     // Search patients
-    SEARCHPATIENTS_TITLE: 'Patients',
-    SEARCHPATIENTS_AGE: 'Aged',
+    SEARCHPATIENTS_TITLE: 'Wagonjwa',
+    SEARCHPATIENTS_AGE: 'Wenye umri wa miaka',
 
     // Patient details
-    PATIENT_EXPIRED: 'Patient expired',
+    PATIENT_EXPIRED: 'Mgonjwa muda wake',
 
     YES:'Ndio',
     NO:'Hapana',
@@ -241,13 +345,13 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     MALE: 'Kiume',
     FEMALE: 'Kike',
     LOCATION: 'Location',
-    COUNTRY: 'Country',
+    COUNTRY: 'Nchi',
     STATE: 'State',
     PROVINCE: 'Province',
     CITY: 'City',
     ADDRESS: 'Address',
     POSTAL: 'Postal',
-    CANCEL: 'Cancel',
+    CANCEL: 'kufuta',
     ACTION_SEARCH: 'Search',
 
     //Occupation
@@ -258,7 +362,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     FAMILYEXMINER: 'Mwanajamii katika eneo la Mgodini?',
 
     //Mine Type
-    MINETYPE: 'Mine Type',
+    MINETYPE: 'Mine Aina',
     TYPE_OF_MINE: 'Aina ya Mgodi?',
     ARTISINAL: 'Wadogo',
     OPENPIT:'Open Pit',
@@ -274,11 +378,11 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     DIAMOND: 'Almasi',
     PLATINUM: 'Platini',
     TANZANITE: 'Tanzanite',
-    OTHER: 'Other',
-    MINEYEARS: 'How many years?',
-    MEDBENEFIT: 'Have you ever done medical benefit exam?',
-    CALLCOMPENSATION: 'Instruct miner to call this toll free number for information about compensation: 0801000240',
-    REFERMINER: 'Refer miner to the close Occupational Health Service Center',
+    OTHER: 'Nyingine',
+    MINEYEARS: 'Jinsi miaka mingi?',
+    MEDBENEFIT: 'Je, umewahi kufanya matibabu ya mtihani faida?',
+    CALLCOMPENSATION: 'Agiza mchimbaji kuwaita hii toll bure ya simu kwa habari kuhusu fidia: 0801000240',
+    REFERMINER: 'Rejea mchimbaji kwa karibu Afya Service Center',
 
     //TB SYMPTOMS
     TBSYMPTOMS:'Dalili za Kifua Kikuu',
@@ -293,32 +397,32 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
 
     //TB RISK
     TBRISK:'MAZINGIRA HATARI YA TB',
-    TBCONTACT:'Have you been in close contact with a person with TB?',
+    TBCONTACT:'Je, umekuwa karibu sana na mtu aliye na TB?',
     TREATEDTB: 'Umeshawahi kutibiwa TB ?',
-    HOWLONG: 'For how many months were you treated for TB?',
-    DIABETESE: 'Una ugonjwa wa kisukari ?',
-    TOBACCO: 'Unavuta Sigara  ?',
+    HOWLONG: 'Kwa jinsi miezi mingi Ulikuwa kutibiwa kwa TB?',
+    DIABETESE: 'Una ugonjwa wa kisukari?',
+    TOBACCO: 'Unavuta Sigara?',
 
     //HIV
     HIV: 'Maswali ya HIV',
     HIVTEST: 'Umeshawahi  kupima kipimo cha HIV kwa muda wa miezi 3 iliyopita ?',
-    DISCLOSE: 'Are you willing to disclose your status?',
-    RESULTS: 'What was the result of your most recent HIV test?',
-    ARV: 'Are you currently on ART/ARVs?',
-    HIVRETEST: ' Je ungependa kupima  HIV  ?',
+    DISCLOSE: 'Je, uko tayari kuweka wazi hali yako?',
+    RESULTS: 'Ilikuwa ni matokeo ya mtihani yako ya hivi karibuni VVU?',
+    ARV: 'Je, wewe ni sasa kwenye ART / ARVs?',
+    HIVRETEST: 'Je, ungependa kupima  HIV  ?',
 
     //Contact Information
-    PHONE1: 'Phone Number 1',
-    PHONE2: 'Phone number 2',
-    PHONE1OWNER: 'To whom does phone number 1 belong to?',
-    PHONE2OWNER: 'To whom does phone number 2 belong to?',
-    MYSELF : 'Myself',
-    OTHER_OWNER: 'Someone else',
-    OTHER_NAME: 'If someone else, enter owners name',
-    ADDRESS: 'Residential address',
-    LANDMARK: 'Landmark near home',
+    PHONE1: 'Nambari ya simu 1',
+    PHONE2: 'Nambari ya simu 2',
+    PHONE1OWNER: 'Kwa nani anafanya simu namba 1 ni mali ya?',
+    PHONE2OWNER: 'Kwa nani anafanya simu namba 2 ni mali ya?',
+    MYSELF : 'Mimi mwenyewe',
+    OTHER_OWNER: 'Mtu mwingine',
+    OTHER_NAME: 'Kama mtu mwingine, kuingia wamiliki jina',
+    ADDRESS: 'Makazi ya mahali',
+    LANDMARK: 'Kihistoria karibu na nyumbani',
 
-    PATIENTID: 'Patient ID'
+    PATIENTID: 'Mgonjwa ID'
 
   }).translations('en', {
     // Languages
