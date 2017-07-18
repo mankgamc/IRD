@@ -77,13 +77,14 @@ angular.module('openmrs.services', [])
       async: async,
       success: function(res) { 
         res.passed = true;
-		//alert ('patient added');       
+		alert ('FORM SUBMITTED SUCCESSFULLY');       
         console.log(res);
         handle(res); 
       },
       error: function(res) {
         res.passed = false; 
 		//alert (res.status);
+		alert('ERROR SUBMITTING THE FORM');
         handle(res); 
       }
     });

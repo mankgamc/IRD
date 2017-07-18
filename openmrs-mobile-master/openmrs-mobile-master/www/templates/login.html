@@ -1,4 +1,4 @@
-<ion-modal-view ng-controller="AppCtrl">
+﻿<ion-modal-view ng-controller="AppCtrl">
   
   <ion-content class="padding">
     <div class="card">
@@ -19,19 +19,22 @@
         <span class="input-label">{{ 'LOGIN_PASSWORD_LABEL' | translate }}</span>
         <input type="password" ng-model="login.password">
       </label>
-      <center>
-      <div class="list list-inset">      
+      <div style="text-align: center;" >
+        <div class="list list-inset">      
         
-        <ion-radio ng-model="choice" ng-click="switchLanguage('sw')" style="display:inline-block">{{ 'LANG_sw' | translate }}</ion-radio>
-        <ion-radio ng-model="choice" ng-click="switchLanguage('pt')" style="display:inline-block">{{ 'LANG_pt' | translate }}</ion-radio>
-        <ion-radio ng-model="choice" ng-click="switchLanguage('en')" style="display:inline-block">{{ 'LANG_en' | translate }}</ion-radio>
+          <ion-radio ng-model="choice" ng-click="switchLanguage('sw')" style="display: inline-block">{{ 'LANG_sw' | translate }}</ion-radio>
+          <ion-radio ng-model="choice" ng-click="switchLanguage('pt')" style="display: inline-block">{{ 'LANG_pt' | translate }}</ion-radio>
+          <ion-radio ng-model="choice" ng-click="switchLanguage('en')" style="display: inline-block">{{ 'LANG_en' | translate }}</ion-radio>
+        </div>
       </div>
-      </center>
     </div>
-    <center>
-    <button class="button button-positive" ng-click="login(login.host, login.username, login.password)">{{ 'LOGIN' | translate }}</button>
-    <br /> <br />
-    <ion-spinner icon="spiral" ng-show="loading"></ion-spinner>
-    </center>
+    <div style="text-align: center;" >
+      <button class="button button-positive" ng-click="login(login.host, login.username, login.password)">{{ 'LOGIN' | translate }}</button>
+      <br/> <br/>
+      <ion-spinner icon="spiral" ng-show="loading"></ion-spinner>
+    </div>
   </ion-content>
 </ion-modal-view>
+
+
+

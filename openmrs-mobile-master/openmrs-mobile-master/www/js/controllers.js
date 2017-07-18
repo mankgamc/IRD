@@ -353,7 +353,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
                 { concept: $rootScope.sandstone           , value: $scope.newpatient.sandstone },
                 { concept: $rootScope.copper           , value: $scope.newpatient.copper },
                 { concept: $rootScope.platinum           , value: $scope.newpatient.platinum },
-                { concept: $rootScope.magnessium           , value: $scope.newpatient.magnessium },
+                { concept: $rootScope.magnesium           , value: $scope.newpatient.magnesium },
                 { concept: $rootScope.iron_ore           , value: $scope.newpatient.ironore },
                 { concept: $rootScope.uranium           , value: $scope.newpatient.uranium },
                 { concept: $rootScope.mining_years           , value: $scope.newpatient.mining_years },
@@ -651,4 +651,45 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
                 });  
     }; 
 
+})
+
+.controller('TreatmentInitiationCtrl', function($scope, $state, ApiService, $cordovaBarcodeScanner) {
+  // Should work without initializing.. for some reason it doesn't.
+
+  $scope.searchpatients = [];
+  $scope.searchpatients.query = '';
+
+  $scope.scan = function() {
+        $cordovaBarcodeScanner.scan().then(function(imageData) {
+            
+              $scope.searchpatients.query = imageData.text;  
+              $scope.$digest();
+        }, function(error) {
+            console.log("An error happened -> " + error);
+        });
+    };
+
+  $scope.searchpatients.searching = true;
+  ApiService.getLastViewedPatients(function(res) {
+    $scope.searchpatients.searching = false;
+    $scope.searchpatients.patientList = res;
+    $scope.$apply();
+  });
+
+  var search = function(res) {
+    $scope.searchpatients.patientList = res;
+    $scope.searchpatients.searching = false;
+    $scope.$apply();
+  }
+
+  $scope.$watch('searchpatients.query', function(nVal, oVal) {
+    if (nVal !== oVal) {
+      $scope.searchpatients.searching = true;
+      if(!$scope.searchpatients.query) {
+        ApiService.getLastViewedPatients(search);
+      } else {
+        ApiService.getPatients($scope.searchpatients.query, search);
+      }
+    }
+  });
 })

@@ -58,7 +58,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
   $rootScope.platinum = '078723b3-e534-47fd-8ecc-b045636e1e0f';
   $rootScope.copper = '5ba56336-044d-4778-a77b-8228f5233db1';
   $rootScope.iron_ore = '08c89d04-e909-4c42-90d8-994c23d4496e';
-  $rootScope.magnessium = '8ec94325-363b-4b0e-bc7d-c434f06addcc';
+  $rootScope.magnesium = '8ec94325-363b-4b0e-bc7d-c434f06addcc';
 
   $rootScope.mbe = '111228b8-bfe7-421c-a88b-1d79d71e64b3';
   $rootScope.mining_years = '0009e6c2-bd5b-499f-8d7c-c3918b137356';
@@ -134,7 +134,11 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     MENU_SPUTUM_RESULTS : 'Resultados do escarro',
     MENU_SEARCHPATIENTS : 'Búsqueda de pacientes',
     MENU_REGISTERPATIENT : 'Registrar un paciente',
+	MENU_TREATMENT_INITIATION: 'Iniciação ao tratamento', 
+	MENU_CONTRACT_TRACING: 'Rastreamento de contatos', 
     MENU_LOGOUT: 'Cerrar sesión',
+	
+	
 
     // Inicio de sesión
     LOGIN_TITLE : 'Sesión de OpenMRS',
@@ -299,6 +303,8 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     MENU_SPUTUM_RESULTS : 'Majibu ya Makohozi',
     MENU_SEARCHPATIENTS : 'Search wagonjwa',
     MENU_REGISTERPATIENT : 'Register mgonjwa',
+	MENU_TREATMENT_INITIATION: 'Uanzishaji wa Matibabu', 
+	MENU_CONTRACT_TRACING: 'Wasiliana na Ufuatiliaji', 
     MENU_LOGOUT: 'Kutoka',
 
     // Logging in
@@ -438,6 +444,8 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     MENU_SPUTUM_RESULTS : 'Sputum Results',
     MENU_SEARCHPATIENTS : 'Search patients',
     MENU_REGISTERPATIENT : 'Register a patient',
+	MENU_TREATMENT_INITIATION: 'Treatment Initiation', 
+	MENU_CONTRACT_TRACING: 'Contract Tracing', 
     MENU_LOGOUT: 'Logout',
 
     // Logging in
@@ -528,7 +536,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     COUGHINGBLOOD:'Coughing blood',
     FEVER:'Fever',
     NIGHTSWEATS:'Drenching night sweats',
-    WEIGHTLOSS:'unexplained weight loss',
+    WEIGHTLOSS:'Unexplained weight loss',
     FATIGUE:'Weakness or fatigue',
     APPETITELOSS:'Loss of appetite',
     CHESTPAIN:'Chest pains',
@@ -700,7 +708,25 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
         controller: 'PatientCtrl'
       }
     }
-  });
+  })
+  
+    .state('app.treatmentInitiation', {
+    url: '/treatmentInitiation',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/treatmentInitiation.html',
+        controller: 'TreatmentInitiationCtrl'
+      }
+    }
+  })
+
+  
+  
+  
+  ;
+  
+  
+  
 
   $urlRouterProvider.otherwise('/app/dashboard');
 });

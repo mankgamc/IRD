@@ -1,8 +1,8 @@
-<ion-view>
+﻿<ion-view>
 <ion-nav-title><span ng-show="!loading">{{ patient.person.display }}</span><span ng-show="loading">Loading...</span></ion-nav-title>
 <ion-content delegate-handle="mainScroll" overflow-scroll="true">
-	<center><ion-spinner icon="dots" ng-show="loading"></ion-spinner></center>
-	<div ng-show="!loading">
+  <div style="text-align: center;" ><ion-spinner icon="dots" ng-show="loading"></ion-spinner></div>
+  <div ng-show="!loading">
 	<div class="card">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'BASIC' | translate }}</div>
 		<ion-item class="item-icon-left" >
