@@ -4,9 +4,12 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', 'pascalprecht.translate'])
 
-.run(function($ionicPlatform, $rootScope) {
+var db = null;
+
+angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', 'pascalprecht.translate', 'ngCordova'])
+
+.run(function($ionicPlatform, $rootScope, $cordovaSQLite) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,8 +22,10 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-  });
-
+	db = $cordovaSQLite.openDB("my.db");
+            $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS people (id integer primary key, firstname text, lastname text)");	
+  }); 
+  
   $rootScope.previousState;
   $rootScope.currentState;
   $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
