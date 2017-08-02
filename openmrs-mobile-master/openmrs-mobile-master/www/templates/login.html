@@ -27,6 +27,12 @@
           <ion-radio ng-model="choice" ng-click="switchLanguage('en')" style="display: inline-block">{{ 'LANG_en' | translate }}</ion-radio>
         </div>
       </div>
+	  
+	  <div class="item item-divider item-text-wrap">	  
+           <ion-checkbox ng-model="" ng-init="" >Work Offline </ion-checkbox>	  
+	  </div>
+				  
+	  </div>
     </div>
     <div style="text-align: center;" >
       <button class="button button-positive" ng-click="login(login.host, login.username, login.password)">{{ 'LOGIN' | translate }}</button>

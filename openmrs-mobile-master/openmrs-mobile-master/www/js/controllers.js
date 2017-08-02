@@ -23,12 +23,30 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 })
 
-.controller('LoginCtrl', function($scope, $state, $translate, $ionicPopup, ApiService, AuthService, TranslationService) {
+.controller('LoginCtrl', function($scope, $state, $translate, $ionicPopup,$cordovaSQLite, ApiService, AuthService, TranslationService) {
 
   $scope.login = function(host, username, password) {
+	
+/*	
+        var query = "INSERT INTO people2 (firstname, lastname) VALUES ('name 1','name 2')";
+        $cordovaSQLite.execute(db, query);   
+				   
+        var query = "SELECT firstname, lastname FROM people2";
+        $cordovaSQLite.execute(db, query).then(function(res) {
+            if(res.rows.length > 0) {
+                console.log("SELECTED -> " + res.rows.item(0).firstname + " " + res.rows.item(0).lastname);
+            } else {
+                console.log("No results found");
+            }
+        }, function (err) {
+            console.log(err);
+        }); */	
     
     if(!host) {
-      host = 'http://tims.dedicated.co.za:8080/timslocal/'
+     // host = 'http://adpptimsmhealth.dedicated.co.za:8080/timsTest/'	 
+	// host = 'http://localhost:8085/timsZambia/'
+	 
+	 host = 'http://tims.dedicated.co.za:8080/timslocal/'
     }
     var prefix = 'http://';
     if (host.substr(0, prefix.length) !== prefix) {
@@ -214,16 +232,16 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 
 
-.controller('NewPatientCtrl', function($scope, $stateParams, $rootScope, $cordovaGeolocation, $cordovaBarcodeScanner,$cordovaToast, $ionicScrollDelegate, $cordovaDatePicker, ApiService) {
+.controller('NewPatientCtrl', function($scope, $stateParams, $rootScope, $cordovaGeolocation, $cordovaBarcodeScanner,$cordovaToast, $ionicScrollDelegate, $cordovaDatePicker, ApiService, $cordovaSQLite) {
 
   $scope.setSuspect = function(){
     if($scope.newpatient.cough === $scope.yes || $scope.newpatient.hemoptysis === $scope.yes || $scope.newpatient.fever === $scope.yes ||
    $scope.newpatient.night_sweats === $scope.yes || $scope.newpatient.weight_loss === $scope.yes || $scope.newpatient.fatigue === $scope.yes ||
     $scope.newpatient.appetite_loss === $scope.yes || $scope.newpatient.chest_pain  === $scope.yes
     ){
-        $scope.newpatient.suspect = true;
+        $scope.newpatient.suspect = $rootScope.yes;
     }else{
-        $scope.newpatient.suspect = false;
+        $scope.newpatient.suspect = $rootScope.no;
     }
   };
 
@@ -232,7 +250,8 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
   };
 
   $scope.newpatient = {
-    suspect:false,
+  //  suspect:false,
+  suspect:$rootScope.no,
     Hiv_status_disclose: $rootScope.no,
     last_hiv_result: $rootScope.Negative,
     arv_status: $rootScope.no,
@@ -243,7 +262,16 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     exminer: $rootScope.no,
     family_miner: $rootScope.no,
     family_exminer: $rootScope.no,
-    mbe: $rootScope.no
+    mbe: $rootScope.no,
+	
+	//add other patient default attribute values
+	//assign unknown as default value. Add unknown option on OpenMRS if it is not available
+	do_hiv_test: $rootScope.no
+	
+	
+	
+	
+	
   };
 
   $scope.patientid = ' ';
@@ -332,10 +360,76 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
       console.log(err);
    });
 
-  $scope.submit = function(){
-    alert('GPS LOCATION _________ '+$scope.address.latitude + ' : '+$scope.address.longitude);
+  
+  $scope.submit = function(){	
+	  
+  if (offline){
+
+  
+	alert('GPS LOCATION _________ '+$scope.address.latitude + ' : '+$scope.address.longitude);
     $scope.submitloading = true;
     console.log("Phone number 2 : "+$scope.newpatient.phone2number);
+	
+//Create a person and patient 	
+ var query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+$rootScope.phone2 + "'"+ ","+ "'"+$scope.newpatient.phone2number + "'"+ ","+   "'"+$scope.newpatient.patientid + "'"+ "," + "'"+ $rootScope.screening_encounter_uuid + "'"+ ")";	
+	
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });
+				
+			 
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.phone1 + "'"+ ","+"'"+ $scope.newpatient.phone1number + "'"+ ","+"'"+$scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";	
+	
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        }); 	 		
+	
+	 query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.telephone1owner + "'"+ ","+ "'"+$scope.newpatient.phone1_owner + "'"+ ","+"'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";	
+	
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        }); 		
+	
+	 query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.telephone2owner + "'"+ ","+ "'"+ $scope.newpatient.phone2_owner + "'"+ ","+ "'"+ $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";
+	
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });		
+
+ query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.govtid + "'"+ ","+ "'"+ $scope.newpatient.govt_id + "'"+ ","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";	
+	
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  	
+	
+	
+	query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.identifierType1 + "'"+ ","+ "'"+ $scope.newpatient.patientid + "'"+ ","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";	
+	
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+			
+	query = "INSERT INTO tbltimsLocalidentifiers(identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender) VALUES (" + "'"+ $rootScope.identifierType1 + "'"+ ","+ "'"+ $scope.newpatient.patientid + "'"+ ","+ "'"+  $rootScope.zingcuka + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+","+ "'"+ $scope.person.address1+ "'"+ ","+ "'"+ $scope.person.address2+ "'"+","+ "'"+$scope.person.longitude+ "'"+","+ "'"+$scope.person.latitude+ "'"+ ","+ "'"+  $scope.person.givenName+ "'"+","+ "'"+ $scope.person.familyName+ "'"+"," + "'"+$scope.person.age + "'"+","+ "'"+$scope.person.birthdate+ "'"+","+ "'"+$scope.person.gender+ "'"+")";	
+	
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  	
+	
+	/*
     $scope.person.attributes = [{
       attributeType:$rootScope.phone1, value:$scope.newpatient.phone1number
     },{
@@ -347,13 +441,728 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     },{
       attributeType:$rootScope.govtid, value:$scope.newpatient.govt_id
     }];
+		
+	
     $scope.patient = {
-    identifiers:[{identifierType:$rootScope.identifierType1,identifier:$scope.newpatient.patientid,location:$rootScope.zingcuka}],
+    identifiers:[{identifierType:$rootScope.identifierType1,
+	identifier:$scope.newpatient.patientid,
+	location:$rootScope.zingcuka}],
     person: $scope.person
   };
-    console.log("Patient JSON : "+angular.toJson($scope.patient));
+  
+  */
+  
+  
+   // console.log("Patient JSON : "+ "'"+angular.toJson($scope.patient));
     
-    ApiService.createPatient(angular.toJson($scope.patient), function(res) {
+    //ApiService.createPatient(angular.toJson($scope.patient), function(res) {
+        //start createpatient
+     // console.log("Response : "+ "'"+res);
+  //    $scope.patientResult = res;
+      //console.log("Response uuid : "+ "'"+$scope.patientResult.uuid);
+      
+	  
+	  //$scope.observations.patient = $scope.patientResult.uuid;
+
+    //  $scope.loading = false;
+                
+            //  var patient = angular.toJson($scope.patient);
+            //  var encounter = angular.toJson($scope.observations);
+             // console.log("Encounter Object : "+ "'"+encounter);
+			 
+	query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.miner  + "'"+ ","+ "'"+ $scope.newpatient.miner + "'"+ ","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";			 
+			 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+		query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.exminer   + "'"+ ","+ "'"+ $scope.newpatient.exminer + "'"+ ","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";			 
+			 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+		query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.family_miner    + "'"+","+ "'"+  $scope.newpatient.family_miner + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+		
+				 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.family_exminer  + "'"+","+ "'"+  $scope.newpatient.family_exminer + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.open_pit         + "'"+","+ "'"+  $scope.newpatient.openpit + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.underground     + "'"+","+ "'"+  $scope.newpatient.underground + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.artisinal       + "'"+","+ "'"+  $scope.newpatient.artisinal + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.gold           + "'"+","+ "'"+  $scope.newpatient.gold + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.coal           + "'"+","+ "'"+  $scope.newpatient.coal + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.diamond           + "'"+","+ "'"+  $scope.newpatient.diamond + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.sandstone           + "'"+","+ "'"+  $scope.newpatient.sandstone + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.copper           + "'"+","+ "'"+  $scope.newpatient.copper + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.platinum           + "'"+","+ "'"+  $scope.newpatient.platinum + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.magnesium           + "'"+","+ "'"+  $scope.newpatient.magnesium + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.iron_ore           + "'"+","+ "'"+  $scope.newpatient.ironore + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.uranium           + "'"+","+ "'"+  $scope.newpatient.uranium + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.mining_years           + "'"+","+ "'"+  $scope.newpatient.mining_years + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.mbe                     + "'"+","+ "'"+  $scope.newpatient.mbe + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.cough                       + "'"+","+ "'"+  $scope.newpatient.cough + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.hemoptysis               + "'"+","+ "'"+  $scope.newpatient.hemoptysis + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.fever                       + "'"+","+ "'"+  $scope.newpatient.fever + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.night_sweats                + "'"+","+ "'"+  $scope.newpatient.night_sweats + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.weight_loss                 + "'"+","+ "'"+  $scope.newpatient.weight_loss + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.fatigue                     + "'"+","+ "'"+  $scope.newpatient.fatigue + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.appetite_loss               + "'"+","+ "'"+  $scope.newpatient.appetite_loss + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.chest_pain                  + "'"+","+ "'"+  $scope.newpatient.chest_pain + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.contact_with_tb             + "'"+","+ "'"+  $scope.newpatient.contact_with_tb + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.tb_treatment_past           + "'"+","+ "'"+  $scope.newpatient.tb_treatment_past + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.tb_treatment_past_duration  + "'"+","+ "'"+  $scope.newpatient.tb_treatment_past_duration + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.diabetes                    + "'"+","+ "'"+  $scope.newpatient.diabetes + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.tobacco                     + "'"+","+ "'"+  $scope.newpatient.tobacco + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.hiv_test_before             + "'"+","+ "'"+  $scope.newpatient.hiv_test_before + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.Hiv_status_disclose         + "'"+","+ "'"+  $scope.newpatient.Hiv_status_disclose + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.last_hiv_result             + "'"+","+ "'"+  $scope.newpatient.last_hiv_result + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.arv_status                  + "'"+","+ "'"+  $scope.newpatient.arv_status + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.do_hiv_test                 + "'"+","+ "'"+  $scope.newpatient.do_hiv_test + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.suspect                     + "'"+","+ "'"+  $scope.newpatient.suspect + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
+		 
+		$cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  	
+			 
+             
+			 /*
+              $scope.observations = {
+              patient: $scope.patientResult.uuid,//96cc3fd6-2fea-4e39-bcfb-e48a388f8a8a', // note that you need to post UUIDs here: RESTWS-459
+              encounterType: $rootScope.screening_encounter_uuid,
+              location: $rootScope.location,
+              obs: $scope.obs
+            };	
+			
+			**/
+
+	// timsDb = $cordovaSQLite.openDB("tims.db");
+       //     $cordovaSQLite.execute(timsDb, "CREATE TABLE tblTBScreenings(latitude text, longitude text, phone2number text)");	  
+	   
+	
+		
+		
+		
+		
+		//Create encounters	
+		
+       /*	
+		var query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (fieldnameUUID, value , qrCode ,  encountertype )";	
+		
+		**/
+		
+				
+		var querySelect = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters";
+		
+		
+								
+			$cordovaSQLite.execute(timsDb,querySelect).then(function(res) {
+             if(res.rows.length > 0) {				 
+				 for (i = 0; i < res.rows.length; i++) {
+					  console.log("SELECTED -> " + res.rows.item(i).fieldnameUUID + " " + res.rows.item(i).value +" " + res.rows.item(i).qrCode+
+					 " " + res.rows.item(i).encountertype );
+						}              
+            }
+        }, function (err) {
+            console.log(err);
+        });
+		
+  
+	//Build screening payload from the Local Database			
+	var querySelectQrCode = "Select DISTINCT qrCode  FROM tbltimsLocalEncounters";				
+							
+	$cordovaSQLite.execute(timsDb,querySelectQrCode).then(function(res) {
+             if(res.rows.length > 0) {				 
+				 for (i = 0; i < res.rows.length; i++) {
+  $scope.person = [];
+  $scope.patient =[]; 
+  $scope.obs = [] ; 
+
+ 
+					 	var queryObservation = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters qrCode = " +res.rows.item(i).qrCode;	
+
+					var queryIndentifiers = "Select tbltimsLocalidentifiers identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender where qrCode = "+res.rows.item(i).qrCode;	
+	
+					
+		//build Person 			
+             $cordovaSQLite.execute(timsDb,queryObservation).then(function(res) {
+             if(res.rows.length > 0) {
+				 
+				  for (j = 0; j < res.rows.length; j++) {
+					  
+if ($rootScope.phone1 === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.phone1number = res.rows.item(j).value;
+						
+						
+					}
+					
+if ($rootScope.phone2 === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.phone2number = res.rows.item(j).value;						
+					}
+					
+if ($rootScope.telephone2owner === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.phone1_owner = res.rows.item(j).value;
+						
+						
+					}
+					
+if ($rootScope.telephone1owner === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.phone2_owner = res.rows.item(j).value;			
+						
+					}
+					
+					
+if ($rootScope.govtid === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.govtid = res.rows.item(j).value;					
+						
+					}
+					
+						
+if ($rootScope.miner   === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.miner }= res.rows.item(j).value;					
+						
+					}
+	
+if ($rootScope.exminer     === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.exminer = res.rows.item(j).value;				
+						
+					}		
+
+if ($rootScope.family_miner      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.family_miner  = res.rows.item(j).value;					
+						
+					}	
+
+
+if ($rootScope.open_pit      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.open_pit  = res.rows.item(j).value;					
+						
+					}
+
+if ($rootScope.underground      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.underground  = res.rows.item(j).value;					
+						
+					}
+if ($rootScope.artisinal      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.artisinal  = res.rows.item(j).value;					
+						
+					}	
+if ($rootScope.gold      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.gold  = res.rows.item(j).value;					
+						
+					}	
+
+if ($rootScope.coal      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.coal  = res.rows.item(j).value;					
+						
+					}
+
+
+if ($rootScope.diamond      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.diamond  = res.rows.item(j).value;					
+						
+					}						
+											
+if ($rootScope.sandstone      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.sandstone  = res.rows.item(j).value;					
+						
+					}
+
+if ($rootScope.copper      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.copper  = res.rows.item(j).value;					
+						
+					}	
+if ($rootScope.platinum      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.platinum  = res.rows.item(j).value;					
+						
+					}						
+														
+if ($rootScope.magnesium      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.magnesium  = res.rows.item(j).value;					
+						
+					}						
+					
+
+if ($rootScope.iron_ore      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.iron_ore  = res.rows.item(j).value;					
+						
+					}							
+			
+
+if ($rootScope.uranium      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.uranium  = res.rows.item(j).value;					
+						
+					}					
+if ($rootScope.mining_years      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.mining_years  = res.rows.item(j).value;					
+						
+					}
+					
+if ($rootScope.mbe      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.mbe  = res.rows.item(j).value;					
+						
+					}
+					
+if ($rootScope.cough      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.cough  = res.rows.item(j).value;					
+						
+					}
+
+         
+if ($rootScope.hemoptysis      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.hemoptysis  = res.rows.item(j).value;					
+						
+					}
+					
+if ($rootScope.fever      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.fever  = res.rows.item(j).value;					
+						
+					}
+
+					
+								
+if ($rootScope.night_sweats      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.night_sweats  = res.rows.item(j).value;					
+						
+					}
+					
+if ($rootScope.weight_loss      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.weight_loss  = res.rows.item(j).value;					
+						
+					}
+
+if ($rootScope.fatigue      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.fatigue  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.appetite_loss === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.appetite_loss  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.chest_pain      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.chest_pain  = res.rows.item(j).value;					
+						
+					}
+					
+										
+if	($rootScope.contact_with_tb      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.contact_with_tb  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.tb_treatment_past      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.tb_treatment_past  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.tb_treatment_past_duration      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.tb_treatment_past_duration  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.diabetes      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.diabetes  = res.rows.item(j).value;					
+						
+					}
+	
+if	($rootScope.tobacco      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.tobacco  = res.rows.item(j).value;					
+						
+					}
+					
+																			if	($rootScope.hiv_test_before      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.hiv_test_before  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.Hiv_status_disclose      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.Hiv_status_disclose  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.last_hiv_result      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.last_hiv_result  = res.rows.item(j).value;					
+						
+					}
+					
+if	($rootScope.arv_status      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.arv_status  = res.rows.item(j).value;	
+						
+					}
+					
+																			if	($rootScope.do_hiv_test      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.do_hiv_test  = res.rows.item(j).value;					
+						
+					}
+					
+																			if	($rootScope.suspect      === res.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.suspect  = res.rows.item(j).value;					
+						
+					}				
+					  
+				  } 
+ 						
+            }
+        }, function (err) {
+            console.log(err);
+        });	
+
+
+//Build Patient
+
+	$scope.person.attributes = [{
+      attributeType:$rootScope.phone1, value:$scope.newpatient.phone1number
+    },{
+      attributeType:$rootScope.phone2, value:$scope.newpatient.phone2number
+    },{
+      attributeType:$rootScope.telephone1owner, value:$scope.newpatient.phone1_owner
+    },{
+      attributeType:$rootScope.telephone2owner, value:$scope.newpatient.phone2_owner
+    },{
+      attributeType:$rootScope.govtid, value:$scope.newpatient.govt_id
+    }];
+
+		$cordovaSQLite.execute(timsDb,queryIndentifiers).then(function(res) {
+             if(res.rows.length > 0) {
+ 
+  $scope.person.addresses = {address1: res.rows.item(0).address1,
+    address2: res.rows.item(0).address2,
+    longitude: res.rows.item(0).longitude,
+  latitude: res.rows.item(0).latitude};
+  $scope.person.names = {
+  givenName:res.rows.item(0).givenName,
+  familyName : res.rows.item(0).familyName};
+  $scope.person.age = res.rows.item(0).age;
+  $scope.person.birthdate = res.rows.item(0).birthdate;
+  $scope.person.gender	= res.rows.item(0).gender;		 
+
+     $scope.patient = {
+    identifiers:[{identifierType:$rootScope.identifierType1,identifier:res.rows.item(0).qrCode,location:$rootScope.zingcuka}],
+    person: $scope.person
+  }; 
+  
+ console.log("Patient JSON : "+angular.toJson($scope.patient));
+//build final Payload 	
+					 
+//Post Patient and delete/mark as deleted from the database		
+  
+  ApiService.createPatient(angular.toJson($scope.patient), function(res) {
         //start createpatient
       console.log("Response : "+res);
       $scope.patientResult = res;
@@ -410,9 +1219,11 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
               encounterType: $rootScope.screening_encounter_uuid,
               location: $rootScope.location,
               obs: $scope.obs
-            };
+            };	
 
-            ApiService.createEncounter(angular.toJson($scope.observations), function(res){
+		
+			
+ ApiService.createEncounter(angular.toJson($scope.observations), function(res){
                 console.log("Response for encounter creation : "+res);
               });
         //end of create patient
@@ -426,17 +1237,57 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
             // error
           });
     });
-
-    $scope.patientuuid = '';
+ 						
+            }
+        }, function (err) {
+            console.log(err);
+        });			 
+					 
+					 
+}}
+        }, function (err) {
+            console.log(err);
+        });
+		
+		
+			/*
+            ApiService.createEncounter(angular.toJson($scope.observations), function(res){
+                console.log("Response for encounter creation : "+res);
+              });
+			  
+			  */
+			  
+        //end of create patient
+        $scope.submitloading = false;
+        $scope.$apply();
+        $cordovaToast.showLongBottom('Form submitted').then(function(success) {
+            // success
+		this.addNewPatientForm.reset();
+			
+          }, function (error) {
+            // error
+          });
+		  
+		  
+		    $scope.patientuuid = '';
     $scope.name = {};
     $scope.attributes = {};
     $scope.patientResult = {};
     $scope.ui = {
     phone1myself:true,
     phone2myself:true
-  };
+  }; 
+  
+		  
+		  
+     
+  }else
+  {}
 
-};
+  }
+  
+  
+
   $scope.scan = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
             

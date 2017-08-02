@@ -5,7 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-var db = null;
+var timsDb = null;
+var offline = true;
 
 angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', 'pascalprecht.translate', 'ngCordova'])
 
@@ -22,8 +23,9 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-	db = $cordovaSQLite.openDB("my.db");
-            $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS people (id integer primary key, firstname text, lastname text)");	
+	timsDb = $cordovaSQLite.openDB("timsstore.db");
+            $cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalidentifiers (identifierType1 text, patientid text, location text,  encountertype text, address1 text, address2 text, longitude text, latitude text,  givenName text, familyName text, age text, birthdate text, gender text)");	
+			$cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalEncounters (fieldnameUUID text, value text, qrCode text,  encountertype text)");
   }); 
   
   $rootScope.previousState;

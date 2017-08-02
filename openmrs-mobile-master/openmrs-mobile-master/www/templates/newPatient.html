@@ -50,9 +50,7 @@
 			</ion-item>
 		
 	</div>
-
-	<div class="card">
-	
+	<div class="card">	
 	<div class="item item-divider item-text-wrap item-balanced">{{ 'OCCUPATION' | translate }}</div>
 		<div class="item item-divider item-text-wrap" ng-init="newpatient.miner = '{{no}}'">{{ 'MINER' | translate}}</div>
 		  <ion-radio name="miner" ng-model="newpatient.miner" value="{{yes}}" >{{ 'YES' | translate}}</ion-radio>
@@ -80,22 +78,21 @@
 	&& newpatient.family_miner === '{{no}}' && newpatient.family_exminer === '{{no}}'">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'MINETYPE' | translate }}</div>
 			<div class="item item-divider item-text-wrap">{{ 'TYPE_OF_MINE' | translate}}</div>
-				<ion-checkbox name="minetype" ng-model="newpatient.openpit" ng-init="newpatient.openpit=false">{{ 'OPENPIT' | translate }}</ion-checkbox>
-			<ion-checkbox name="minetype" ng-model="newpatient.underground" ng-init="newpatient.underground=false" >{{ 'UNDERGROUND' | translate }}</ion-checkbox>
-				<ion-checkbox name="minetype" ng-model="newpatient.artisinal" ng-init="newpatient.artisinal=false" >{{ 'ARTISINAL' | translate }}</ion-checkbox>
+				<ion-checkbox name="minetype" ng-model="newpatient.openpit" ng-init="newpatient.openpit=no" ng-true-value="'{{yes}}'"  ng-false-value="'{{no}}'" >{{ 'OPENPIT' | translate }}</ion-checkbox>
+			<ion-checkbox name="minetype" ng-model="newpatient.underground " ng-init="newpatient.underground=false" >{{ 'UNDERGROUND' | translate }}</ion-checkbox>
+				<ion-checkbox name="minetype" ng-model="newpatient.artisinal" ng-init="newpatient.artisinal=false"  >{{ 'ARTISINAL' | translate }}</ion-checkbox>
 		
 		
 			<div class="item item-divider item-text-wrap">{{ 'TYPE_OF_MINERALS' | translate}}</div>
-				  <ion-checkbox ng-model="newpatient.gold" ng-init="newpatient.gold=false" >{{ 'GOLD' | translate }}</ion-checkbox>
-				  <ion-checkbox ng-model="newpatient.coal" ng-init="newpatient.coal=false" >{{ 'COAL' | translate }}</ion-checkbox>
-				  <ion-checkbox ng-model="newpatient.uranium" ng-init="newpatient.uranium=false">{{ 'URANIUM' | translate }}</ion-checkbox>
-				  <ion-checkbox ng-model="newpatient.sandstone" ng-init="newpatient.sandstone=false">{{ 'SANDSTONE' | translate }}</ion-checkbox>
-				  <ion-checkbox ng-model="newpatient.diamond" ng-init="newpatient.diamond=false">{{ 'DIAMOND' | translate }}</ion-checkbox>
+				  <ion-checkbox ng-model="newpatient.gold" ng-init="newpatient.gold=false"  >{{ 'GOLD' | translate }}</ion-checkbox>
+				  <ion-checkbox ng-model="newpatient.coal" ng-init="newpatient.coal=false"  >{{ 'COAL' | translate }}</ion-checkbox>
+				  <ion-checkbox ng-model="newpatient.uranium" ng-init="newpatient.uranium=false" >{{ 'URANIUM' | translate }}</ion-checkbox>
+				  <ion-checkbox ng-model="newpatient.sandstone" ng-init="newpatient.sandstone=false" >{{ 'SANDSTONE' | translate }}</ion-checkbox>
+				  <ion-checkbox ng-model="newpatient.diamond" ng-init="newpatient.diamond=false" >{{ 'DIAMOND' | translate }}</ion-checkbox>
 				  <ion-checkbox ng-model="newpatient.platinum" ng-init="newpatient.platinum=false">{{ 'PLATINUM' | translate }}</ion-checkbox>
-				  <ion-checkbox ng-model="newpatient.magnessium" ng-init="newpatient.magnessium=false">{{ 'MAGNESIUM' | translate }}</ion-checkbox>
+				  <ion-checkbox ng-model="newpatient.magnesium" ng-init="newpatient.magnesium=false">{{ 'MAGNESIUM' | translate }}</ion-checkbox>
 				  <ion-checkbox ng-model="newpatient.ironore" ng-init="newpatient.ironore=false">{{ 'IRONORE' | translate }}</ion-checkbox>
-				  <ion-checkbox ng-model="newpatient.copper" ng-init="newpatient.copper=false">{{ 'COPPER' | translate }}</ion-checkbox>
-				
+				  <ion-checkbox ng-model="newpatient.copper" ng-init="newpatient.copper=false">{{ 'COPPER' | translate }}</ion-checkbox>				
 
 			<div class="item item-divider item-text-wrap">{{ 'MINEYEARS' | translate}}</div>
 			  <input ng-model="newpatient.mining_years"ng-init="newpatient.mining_years=0"  type="number">
@@ -202,7 +199,7 @@
 			  <ion-radio ng-show="newpatient.hiv_test_before === '{{yes}}'" name="disclose" ng-model="newpatient.Hiv_status_disclose" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 			  
 				
-			<div ng-show="newpatient.Hiv_status_disclose === '{{yes}}'" class="item item-divider item-text-wrap">{{ 'RESULT' | translate}}</div>
+			<div ng-show="newpatient.Hiv_status_disclose === '{{yes}}'" class="item item-divider item-text-wrap">{{ 'RESULTS' | translate}}</div>
 				  <ion-radio ng-show="newpatient.Hiv_status_disclose === '{{yes}}'" name="result" ng-model="newpatient.last_hiv_result" ng-value="'{{Negative}}'" >Negative</ion-radio>
 				  <ion-radio ng-show="newpatient.Hiv_status_disclose === '{{yes}}'" ng-change="scrollResize()" name="result" ng-model="newpatient.last_hiv_result" ng-value="'{{Positive}}'" >Positive</ion-radio>
 				
@@ -211,7 +208,7 @@
 				  <ion-radio ng-show="newpatient.last_hiv_result === '{{Positive}}'" name="arv" ng-model="newpatient.arv_status" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio ng-show="newpatient.last_hiv_result === '{{Positive}}'" name="arv" ng-model="newpatient.arv_status" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 				
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.do_hiv_test='{{no}}'">{{ 'HIVRETEST' | translate}}</div>
+			<div class="item item-divider item-text-wrap">{{ 'HIVRETEST' | translate}}</div>
 				  <ion-radio name="hivretest" ng-model="newpatient.do_hiv_test" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="hivretest" ng-model="newpatient.do_hiv_test" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 				
