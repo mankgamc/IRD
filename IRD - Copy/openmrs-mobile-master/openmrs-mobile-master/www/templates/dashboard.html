@@ -1,0 +1,35 @@
+<ion-view>
+<ion-nav-title>{{ 'MENU_DASHBOARD' | translate }}</ion-nav-title>
+  <ion-content>
+	  <div class="card">
+	  <div class="item item-text-wrap text-center">
+	  <h1>{{ 'DASH_WELCOME' | translate }}, <span class="icon-left"><i class="icon ion-person"></i></span> {{getUsername()}}</h1>
+	  <p>{{ 'DASH_CONNECTED' | translate }} {{getHost()}}</p>
+	  </div>
+    <div class="list">
+		
+        <div>
+        <h1 align="center">South Africa</h1>
+        </div>   
+	
+    	<label class = "item item-input item-select">
+        <div class = "input-label">
+          Select District
+        </div>
+        <select ng-model="mystuff.district" name="repeatSelect"  ng-change="update()" id="repeatSelect" >
+          <option ng-model="district" ng-repeat="option in districts | orderBy" value="{{option.value}}">{{option.name}}</option>
+        </select>
+      </label>
+      
+      <label class = "item item-input item-select">
+        <div class = "input-label">
+          Select Facility
+        </div>
+        <select name="repeatSelects" id="repeatSelects" ng-change="checklocation()" ng-model="mystuff.location">
+          <option ng-repeat="options in facilities | orderBy" value="{{options.value}}">{{options.name}}</option>
+        </select>
+      </label>
+
+    </div>
+  </ion-content>
+</ion-view>

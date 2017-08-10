@@ -24,7 +24,9 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
       StatusBar.styleDefault();
     }
 	timsDb = $cordovaSQLite.openDB("timsstore.db");
-            $cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalidentifiers (identifierType1 text, patientid text, location text,  encountertype text, address1 text, address2 text, longitude text, latitude text,  givenName text, familyName text, age text, birthdate text, gender text)");	
+	
+			$cordovaSQLite.execute(timsDb,"DROP TABLE IF EXISTS tbltimsLocalidentifiers;");
+            $cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalidentifiers (identifierType1 text, patientid text, location text,  encountertype text, address1 text, address2 text, longitude text, latitude text,  givenName text, familyName text, age NUMERIC, birthdate DATETIME, gender text)");	
 			$cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalEncounters (fieldnameUUID text, value text, qrCode text,  encountertype text)");
   }); 
   
@@ -122,6 +124,11 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
   $rootScope.sample_num = '3394ddbb-0270-4001-852f-843cf728890c';
   $rootScope.result_num = '11eac57c-0e06-4ef4-aaec-ebd39d2c5fa5';
   $rootScope.sp_date = 'd9764ac7-e8b7-417a-ae8b-963f46130215';
+  
+  $rootScope.no_value = '4bc7f41f-e7f1-488d-bad4-44458a12acd3';
+  
+  
+  
 
 })
 

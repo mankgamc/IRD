@@ -52,22 +52,22 @@
 	</div>
 	<div class="card">	
 	<div class="item item-divider item-text-wrap item-balanced">{{ 'OCCUPATION' | translate }}</div>
-		<div class="item item-divider item-text-wrap" ng-init="newpatient.miner = '{{no}}'">{{ 'MINER' | translate}}</div>
-		  <ion-radio name="miner" ng-model="newpatient.miner" value="{{yes}}" >{{ 'YES' | translate}}</ion-radio>
-		  <ion-radio name="miner" ng-model="newpatient.miner" value="{{no}}" >{{ 'NO' | translate}}</ion-radio>
-		  <ion-radio name="miner" ng-model="newpatient.miner" value="{{unknown}}" >{{ 'UNKNOWN' | translate}}</ion-radio>
+		<div class="item item-divider item-text-wrap">{{ 'MINER' | translate}}</div>
+		  <ion-radio name="miner" ng-model="newpatient.miner" ng-value ="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
+		  <ion-radio name="miner" ng-model="newpatient.miner" ng-value ="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
+		  <ion-radio name="miner" ng-model="newpatient.miner" ng-value ="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 
-		<div  ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" class="item item-divider item-text-wrap" ng-init="newpatient.exminer = '{{no}}'">{{ 'EXMINER' | translate}}</div>
+		<div  ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" class="item item-divider item-text-wrap">{{ 'EXMINER' | translate}}</div>
 			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="exminer" ng-model="newpatient.exminer" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
 			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="exminer" ng-model="newpatient.exminer" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 			  <ion-radio ng-show ="newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}'" name="exminer" ng-model="newpatient.exminer" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 
-		<div ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" class="item item-divider item-text-wrap" ng-init="newpatient.family_miner = '{{no}}'">{{ 'FAMILYMINER' | translate}}</div>
+		<div ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" class="item item-divider item-text-wrap" >{{ 'FAMILYMINER' | translate}}</div>
 			  <ion-radio ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
 			  <ion-radio ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 			  <ion-radio ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" name="familyminer" ng-model="newpatient.family_miner" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 				
-		<div ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" class="item item-divider item-text-wrap" ng-init="newpatient.family_exminer = '{{no}}'">{{ 'FAMILYEXMINER' | translate}}</div>
+		<div ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" class="item item-divider item-text-wrap" >{{ 'FAMILYEXMINER' | translate}}</div>
 			  <ion-radio ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
 			  <ion-radio  ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 			  <ion-radio ng-show ="(newpatient.miner === '{{no}}' || newpatient.miner === '{{unknown}}') && newpatient.exminer === '{{no}}'" name="familyexminer" ng-model="newpatient.family_exminer" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
@@ -78,9 +78,9 @@
 	&& newpatient.family_miner === '{{no}}' && newpatient.family_exminer === '{{no}}'">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'MINETYPE' | translate }}</div>
 			<div class="item item-divider item-text-wrap">{{ 'TYPE_OF_MINE' | translate}}</div>
-				<ion-checkbox name="minetype" ng-model="newpatient.openpit" ng-init="newpatient.openpit=no" ng-true-value="'{{yes}}'"  ng-false-value="'{{no}}'" >{{ 'OPENPIT' | translate }}</ion-checkbox>
+				<ion-checkbox name="minetype" ng-model="newpatient.openpit" ng-true-value="'{{yes}}'"  ng-false-value="'{{no}}'" >{{ 'OPENPIT' | translate }}</ion-checkbox>
 			<ion-checkbox name="minetype" ng-model="newpatient.underground " ng-init="newpatient.underground=false" >{{ 'UNDERGROUND' | translate }}</ion-checkbox>
-				<ion-checkbox name="minetype" ng-model="newpatient.artisinal" ng-init="newpatient.artisinal=false"  >{{ 'ARTISINAL' | translate }}</ion-checkbox>
+				<ion-checkbox name="minetype" ng-model="newpatient.artisinal" ng-init="newpatient.artisinal=false" >{{ 'ARTISINAL' | translate }}</ion-checkbox>
 		
 		
 			<div class="item item-divider item-text-wrap">{{ 'TYPE_OF_MINERALS' | translate}}</div>
@@ -113,43 +113,43 @@
 
 	<div class="card">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'TBSYMPTOMS' | translate }}</div>
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.cough='{{no}}'">{{ 'COUGH' | translate}}</div>
+			<div class="item item-divider item-text-wrap" >{{ 'COUGH' | translate}}</div>
 				  <ion-radio name="cough" ng-model="newpatient.cough" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="cough" ng-model="newpatient.cough" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="cough" ng-model="newpatient.cough" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
 			
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.hemoptysis='{{no}}'">{{ 'COUGHINGBLOOD' | translate}}</div>
+			<div class="item item-divider item-text-wrap">{{ 'COUGHINGBLOOD' | translate}}</div>
 				  <ion-radio name="coughingblood" ng-model="newpatient.hemoptysis" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="coughingblood" ng-model="newpatient.hemoptysis" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="coughingblood" ng-model="newpatient.hemoptysis" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
 
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.fever='{{no}}'">{{ 'FEVER' | translate}}</div>
+			<div class="item item-divider item-text-wrap">{{ 'FEVER' | translate}}</div>
 				  <ion-radio name="fever" ng-model="newpatient.fever" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="fever" ng-model="newpatient.fever" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="fever" ng-model="newpatient.fever" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
 				
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.night_sweats='{{no}}'">{{ 'NIGHTSWEATS' | translate}}</div>
+			<div class="item item-divider item-text-wrap" >{{ 'NIGHTSWEATS' | translate}}</div>
 				  <ion-radio name="nightsweats" ng-model="newpatient.night_sweats" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="nightsweats" ng-model="newpatient.night_sweats" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="nightsweats" ng-model="newpatient.night_sweats" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
 
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.weight_loss='{{no}}'">{{ 'WEIGHTLOSS' | translate}}</div>
+			<div class="item item-divider item-text-wrap">{{ 'WEIGHTLOSS' | translate}}</div>
 				  <ion-radio name="weightloss" ng-model="newpatient.weight_loss" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="weightloss" ng-model="newpatient.weight_loss" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="weightloss" ng-model="newpatient.weight_loss" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
 
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.fatigue='{{no}}'">{{ 'FATIGUE' | translate}}</div>
+			<div class="item item-divider item-text-wrap" >{{ 'FATIGUE' | translate}}</div>
 				  <ion-radio name="fatigue" ng-model="newpatient.fatigue" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="fatigue" ng-model="newpatient.fatigue" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="fatigue" ng-model="newpatient.fatigue" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
 				
 
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.appetite_loss='{{no}}'">{{ 'APPETITELOSS' | translate}}</div>
+			<div class="item item-divider item-text-wrap" >{{ 'APPETITELOSS' | translate}}</div>
 				  <ion-radio name="appetiteloss" ng-model="newpatient.appetite_loss" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="appetiteloss" ng-model="newpatient.appetite_loss" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="appetiteloss" ng-model="newpatient.appetite_loss" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
 				
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.chest_pain='{{no}}'">{{ 'CHESTPAIN' | translate}}</div>
+			<div class="item item-divider item-text-wrap">{{ 'CHESTPAIN' | translate}}</div>
 				  <ion-radio name="chestpain" ng-model="newpatient.chest_pain" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="chestpain" ng-model="newpatient.chest_pain" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="chestpain" ng-model="newpatient.chest_pain" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate}}</ion-radio>
@@ -158,12 +158,12 @@
 
 	<div class="card">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'TBRISK' | translate }}</div>
-			<div class="item item-divider item-text-wrap item-text-wrap" ng-init="newpatient.contact_with_tb='{{no}}'">{{ 'TBCONTACT' | translate}}</div>
+			<div class="item item-divider item-text-wrap item-text-wrap" >{{ 'TBCONTACT' | translate}}</div>
 				  <ion-radio name="tbcontact" ng-model="newpatient.contact_with_tb" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate }}</ion-radio>
 				  <ion-radio name="tbcontact" ng-model="newpatient.contact_with_tb" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate }}</ion-radio>
 				  <ion-radio name="tbcontact" ng-model="newpatient.contact_with_tb" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate }}</ion-radio>
 
-			<div class="item item-divider item-text-wrap item-text-wrap" ng-init="newpatient.tb_treatment_past='{{no}}'">{{ 'TREATEDTB' | translate}}</div>
+			<div class="item item-divider item-text-wrap item-text-wrap">{{ 'TREATEDTB' | translate}}</div>
 				  <ion-radio name="tbtreated" ng-model="newpatient.tb_treatment_past" ng-value="'{{yes}}'" ng-change="setSuspect()">{{ 'YES' | translate }}</ion-radio>
 				  <ion-radio name="tbtreated" ng-model="newpatient.tb_treatment_past" ng-value="'{{no}}'" ng-change="setSuspect()">{{ 'NO' | translate }}</ion-radio>
 				  <ion-radio name="tbtreated" ng-model="newpatient.tb_treatment_past" ng-value="'{{unknown}}'" ng-change="setSuspect()">{{ 'UNKNOWN' | translate }}</ion-radio>
@@ -173,14 +173,14 @@
 			  <input ng-model="newpatient.tb_treatment_past_duration"  type="number">
 			</ion-item>
 
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.diabetes='{{no}}'">{{ 'DIABETESE' | translate}}</div>
+			<div class="item item-divider item-text-wrap">{{ 'DIABETESE' | translate}}</div>
 				  <ion-radio name="diabetese" ng-model="newpatient.diabetes" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="diabetese" ng-model="newpatient.diabetes" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="diabetese" ng-model="newpatient.diabetes" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
 				</ion-list>
 			</ion-item>
 
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.tobacco='{{no}}'">{{ 'TOBACCO' | translate}}</div>
+			<div class="item item-divider item-text-wrap" >{{ 'TOBACCO' | translate}}</div>
 				  <ion-radio name="tobacco" ng-model="newpatient.tobacco" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="tobacco" ng-model="newpatient.tobacco" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="tobacco" ng-model="newpatient.tobacco" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
@@ -189,7 +189,7 @@
 
 	<div class="card">
 		<div class="item item-divider item-text-wrap item-balanced">{{ 'HIV' | translate }}</div>
-			<div class="item item-divider item-text-wrap" ng-init="newpatient.hiv_test_before='{{no}}'">{{ 'HIVTEST' | translate}}</div>
+			<div class="item item-divider item-text-wrap">{{ 'HIVTEST' | translate}}</div>
 				  <ion-radio name="hivtest" ng-model="newpatient.hiv_test_before" ng-value="'{{yes}}'" ng-change="scrollResize()" >{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="hivtest" ng-model="newpatient.hiv_test_before" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
 				  <ion-radio name="hivtest" ng-model="newpatient.hiv_test_before" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
