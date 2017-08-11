@@ -430,7 +430,7 @@ do_hiv_test:  $rootScope.unknown
 		        console.log(err);
 		        });  
 					
-			query = "INSERT INTO tbltimsLocalidentifiers(identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender) VALUES (" + "'"+ $rootScope.identifierType1 + "'"+ ","+ "'"+ $scope.newpatient.patientid + "'"+ ","+ "'"+  $rootScope.zingcuka + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+","+ "'"+ $scope.person.address1+ "'"+ ","+ "'"+ $scope.person.address2+ "'"+","+ "'"+$scope.person.longitude+ "'"+","+ "'"+$scope.person.latitude+ "'"+ ","+ "'"+  $scope.person.givenName+ "'"+","+ "'"+ $scope.person.familyName+ "'"+"," + "'"+$scope.person.age + "'"+","+ "'"+$scope.person.birthdate+ "'"+","+ "'"+$scope.person.gender+ "'"+")";	
+			query = "INSERT INTO tbltimsLocalidentifiers(identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender) VALUES (" + "'"+ $rootScope.identifierType1 + "'"+ ","+ "'"+ $scope.newpatient.patientid + "'"+ ","+ "'"+  $rootScope.zingcuka + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+","+ "'"+ $scope.person.address1+ "'"+ ","+ "'"+ $scope.person.address2+ "'"+","+ "'"+$scope.person.longitude+ "'"+","+ "'"+$scope.person.latitude+ "'"+ ","+ "'"+  $scope.person.givenName+ "'"+","+ "'"+ $scope.person.familyName+ "'"+"," + "'"+$scope.person.age + "'"+","+ "'"+$scope.person.birthdate.toISOString()+ "'"+","+ "'"+$scope.person.gender+ "'"+")";	
 			
 			    $cordovaSQLite.execute(timsDb, query).then(function(res) {
 		        console.log(res);
@@ -851,7 +851,7 @@ do_hiv_test:  $rootScope.unknown
 		 
 var queryObservation = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters where qrCode = " + "'"+ res.rows.item(i).qrCode+ "';";	
 
-var queryIndentifiers = "Select identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender from tbltimsLocalidentifiers where patientid = "+ "'"+ res.rows.item(i).qrCode+ "';";	
+var queryIndentifiers = "Select identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, DATETIME(birthdate), gender from tbltimsLocalidentifiers where patientid = "+ "'"+ res.rows.item(i).qrCode+ "';";	
 			
 							
 				//build Person 			
