@@ -26,7 +26,9 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
 	timsDb = $cordovaSQLite.openDB("timsstore.db");
 	
 			$cordovaSQLite.execute(timsDb,"DROP TABLE IF EXISTS tbltimsLocalidentifiers;");
-            $cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalidentifiers (identifierType1 text, patientid text, location text,  encountertype text, address1 text, address2 text, longitude text, latitude text,  givenName text, familyName text, age NUMERIC, birthdate text, gender text)");	
+			$cordovaSQLite.execute(timsDb,"DROP TABLE IF EXISTS tbltimsLocalEncounters;");
+            $cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalidentifiers (identifierType1 text, patientid text, location text,  encountertype text, address1 text, address2 text, longitude text, latitude text,  givenName text, familyName text, age INTEGER, birthdate text, gender text," +
+            "phone1number text, phone2number text, phone2_owner text, phone1_owner text, govtid text )");	
 			$cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalEncounters (fieldnameUUID text, value text, qrCode text,  encountertype text)");
   }); 
   

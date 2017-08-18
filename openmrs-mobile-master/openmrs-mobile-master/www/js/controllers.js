@@ -258,7 +258,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     tb_treatment_past_duration: 0,
     phone2_owner: 'patient',
     phone1_owner: 'patient',
-   // miner: $rootScope.no_value,
+    miner: $rootScope.no_value,
     exminer: $rootScope.no_value,
     family_miner: $rootScope.no_value,
     family_exminer: $rootScope.no_value,
@@ -319,9 +319,14 @@ do_hiv_test:  $rootScope.unknown
 
   $scope.$watch('person.birthdate', function(nVal, oVal) {
     if (nVal !== oVal) {
-      var ageDifMs = Date.now() - $scope.person.birthdate.getTime();
+    	
+    //Naobot - 18/08/2017 - fix age calc. This never worked before the fix.    
+        var selectedTime = new Date($scope.person.birthdate).getTime();        
+    //  var ageDifMs = Date.now() - $scope.person.birthdate.setTime(selectedTime);
+        
+      var ageDifMs = Date.now() - selectedTime;
       var ageDate = new Date(ageDifMs); // miliseconds from epoch
-      $scope.person.age = Math.abs(ageDate.getUTCFullYear() - 1970);
+      $scope.person.age = Math.abs(ageDate.getUTCFullYear() - 1970);      
     }
   });
 
@@ -381,7 +386,9 @@ do_hiv_test:  $rootScope.unknown
 			
 		//Create a person and patient 	
 		 var query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+$rootScope.phone2 + "'"+ ","+ "'"+$scope.newpatient.phone2number + "'"+ ","+   "'"+$scope.newpatient.patientid + "'"+ "," + "'"+ $rootScope.screening_encounter_uuid + "'"+ ")";	
-			
+		
+		 console.log(query);
+		 
 			    $cordovaSQLite.execute(timsDb, query).then(function(res) {
 		        console.log(res);
 		        }, function (err) {
@@ -429,8 +436,21 @@ do_hiv_test:  $rootScope.unknown
 		        }, function (err) {
 		        console.log(err);
 		        });  
+			    
+			    
+			    
+			    
+			    
+			    
 					
-			query = "INSERT INTO tbltimsLocalidentifiers(identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender) VALUES (" + "'"+ $rootScope.identifierType1 + "'"+ ","+ "'"+ $scope.newpatient.patientid + "'"+ ","+ "'"+  $rootScope.zingcuka + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+","+ "'"+ $scope.person.address1+ "'"+ ","+ "'"+ $scope.person.address2+ "'"+","+ "'"+$scope.person.longitude+ "'"+","+ "'"+$scope.person.latitude+ "'"+ ","+ "'"+  $scope.person.givenName+ "'"+","+ "'"+ $scope.person.familyName+ "'"+"," + "'"+$scope.person.age + "'"+","+ "'"+$scope.person.birthdate.toISOString()+ "'"+","+ "'"+$scope.person.gender+ "'"+")";	
+				query = "INSERT INTO tbltimsLocalidentifiers(identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender," +
+				"phone1number, phone2number, phone2_owner, phone1_owner, govtid ) VALUES (" + "'"+ $rootScope.identifierType1 + "'"+ ","+ "'"+ $scope.newpatient.patientid +
+				"'"+ ","+ "'"+  $rootScope.zingcuka + "'"+ "," + "'"+
+				$rootScope.screening_encounter_uuid + "'"+","+ "'"+ $scope.address.address1+
+				"'"+ ","+ "'"+ $scope.address.address2+ "'"+","+ "'"+$scope.address.longitude+
+				"'"+","+ "'"+$scope.address.latitude+ "'"+ ","+ "'"+  $scope.names.givenName+ "'"+","+ "'"+ 
+				$scope.names.familyName+ "'"+"," + "'"+$scope.person.age + "'"+","+ "'"+$scope.person.birthdate.toISOString()+
+				"'"+","+ "'"+$scope.person.gender+ "'"+ "," + "'"+$scope.newpatient.phone1number + "'"+ "," + "'"+$scope.newpatient.phone2number+ "'"+ "," + "'"+$scope.newpatient.phone1_owner+ "'"+ "," + "'"+$scope.newpatient.phone2_owner + "'"+ "," + "'"+$scope.newpatient.govt_id+ "'"+")";	
 			
 			    $cordovaSQLite.execute(timsDb, query).then(function(res) {
 		        console.log(res);
@@ -834,8 +854,7 @@ do_hiv_test:  $rootScope.unknown
 				**/
 				
 						
-				var querySelect = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters";
-				
+		var querySelect = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters";			
 				
 		  
 			//Build screening payload from the Local Database			
@@ -844,54 +863,29 @@ do_hiv_test:  $rootScope.unknown
 			$cordovaSQLite.execute(timsDb,querySelectQrCode).then(function(res) {
 		             if(res.rows.length > 0) {				 
 						 for (i = 0; i < res.rows.length; i++) {
-		  $scope.person = [];
+		 // $scope.person = [];
 		  $scope.patient =[]; 
 		  $scope.obs = [] ; 
 
 		 
 var queryObservation = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters where qrCode = " + "'"+ res.rows.item(i).qrCode+ "';";	
 
-var queryIndentifiers = "Select identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, DATETIME(birthdate), gender from tbltimsLocalidentifiers where patientid = "+ "'"+ res.rows.item(i).qrCode+ "';";	
+var queryIndentifiers = "Select govtid, phone1number , phone2number , phone2_owner , phone1_owner,identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, DATETIME(birthdate), gender  from tbltimsLocalidentifiers where patientid = "+ "'"+ res.rows.item(i).qrCode+ "';";	
 			
+
+
 							
 				//build Person 			
-		             $cordovaSQLite.execute(timsDb,queryObservation).then(function(results) {
-		             if(results.rows.length > 0) {
+$cordovaSQLite.execute(timsDb,queryObservation).then(function(results) { 	
+      	
+		                  	 
+		            	 
+		            	 	            	 
+	if(results.rows.length > 0) {
 						 
 						  for (j = 0; j < results.rows.length; j++) {
 							  
-		if ($rootScope.phone1 === results.rows.item(j).fieldnameUUID)
-							{
-								$scope.newpatient.phone1number = results.rows.item(j).value;
-								
-								
-							}
-							
-		if ($rootScope.phone2 === results.rows.item(j).fieldnameUUID)
-							{
-								$scope.newpatient.phone2number = results.rows.item(j).value;						
-							}
-							
-		if ($rootScope.telephone2owner === results.rows.item(j).fieldnameUUID)
-							{
-								$scope.newpatient.phone2_owner = results.rows.item(j).value;
-								
-								
-							}
-							
-		if ($rootScope.telephone1owner === results.rows.item(j).fieldnameUUID)
-							{
-								$scope.newpatient.phone1_owner = results.rows.item(j).value;			
-								
-							}
-							
-							
-		if ($rootScope.govtid === results.rows.item(j).fieldnameUUID)
-							{
-								$scope.newpatient.govtid = results.rows.item(j).value;					
-								
-							}
-							
+		
 								
 		if ($rootScope.miner   === results.rows.item(j).fieldnameUUID)
 							{
@@ -978,14 +972,14 @@ var queryIndentifiers = "Select identifierType1, patientid, location,  encounter
 							}							
 					
 
-		if ($rootScope.uranium      === results.rows.item(j).fieldnameUUID)
+		if ($rootScope.uranium === results.rows.item(j).fieldnameUUID)
 							{
 								$scope.newpatient.uranium  = results.rows.item(j).value;					
 								
 							}					
 		if ($rootScope.mining_years      === results.rows.item(j).fieldnameUUID)
 							{
-								$scope.newpatient.mining_years  = results.rows.item(j).value;					
+								$scope.newpatient.mining_years  = parseInt(results.rows.item(j).value);					
 								
 							}
 							
@@ -1061,7 +1055,7 @@ var queryIndentifiers = "Select identifierType1, patientid, location,  encounter
 							
 		if	($rootScope.tb_treatment_past_duration      === results.rows.item(j).fieldnameUUID)
 							{
-								$scope.newpatient.tb_treatment_past_duration  = results.rows.item(j).value;					
+								$scope.newpatient.tb_treatment_past_duration  = parseInt(results.rows.item(j).value);					
 								
 							}
 							
@@ -1071,13 +1065,13 @@ var queryIndentifiers = "Select identifierType1, patientid, location,  encounter
 								
 							}
 			
-		if	($rootScope.tobacco      === results.rows.item(j).fieldnameUUID)
+		if	($rootScope.tobacco  === results.rows.item(j).fieldnameUUID)
 							{
 								$scope.newpatient.tobacco  = results.rows.item(j).value;					
 								
 							}
 							
-																					if	($rootScope.hiv_test_before      === results.rows.item(j).fieldnameUUID)
+		if	($rootScope.hiv_test_before === results.rows.item(j).fieldnameUUID)
 							{
 								$scope.newpatient.hiv_test_before  = results.rows.item(j).value;					
 								
@@ -1122,38 +1116,52 @@ var queryIndentifiers = "Select identifierType1, patientid, location,  encounter
 
 
 		//Build Patient
-
-			$scope.person.attributes = [{
-		      attributeType:$rootScope.phone1, value:$scope.newpatient.phone1number
-		    },{
-		      attributeType:$rootScope.phone2, value:$scope.newpatient.phone2number
-		    },{
-		      attributeType:$rootScope.telephone1owner, value:$scope.newpatient.phone1_owner
-		    },{
-		      attributeType:$rootScope.telephone2owner, value:$scope.newpatient.phone2_owner
-		    },{
-		      attributeType:$rootScope.govtid, value:$scope.newpatient.govt_id
-		    }];
+		
 
 				$cordovaSQLite.execute(timsDb,queryIndentifiers).then(function(output) {
+					
+					
+				  	 for (k = 0; k < output.rows.length; k++) {
+			            	
+	            		 console.log("query for identifiers "+output.rows.item(k).givenName);
+	            		 
+	            	 }
+	            	           	
+					
+					
 		             if(output.rows.length > 0) {
-		 
-		  $scope.person.addresses = {address1: output.rows.item(0).address1,
+		
+		  $scope.person.addresses = [{address1: output.rows.item(0).address1,
 		    address2: output.rows.item(0).address2,
 		    longitude: output.rows.item(0).longitude,
-		  latitude: output.rows.item(0).latitude};
-		  $scope.person.names = {
+		  latitude: output.rows.item(0).latitude}];
+				  
+		  
+		  $scope.person.names = [{
 		  givenName:output.rows.item(0).givenName,
-		  familyName : output.rows.item(0).familyName};
+		  familyName : output.rows.item(0).familyName}];
 		  $scope.person.age = output.rows.item(0).age;
-		//  $scope.person.birthdate = output.rows.item(0).birthdate;
-		  $scope.person.gender	= output.rows.item(0).gender;		 
-
-		     $scope.patient = {
-		    identifiers:[{identifierType:$rootScope.identifierType1,identifier:output.rows.item(0).qrCode,location:$rootScope.zingcuka}],
+		 $scope.person.birthdate = output.rows.item(0).birthdate;
+		  $scope.person.gender	= output.rows.item(0).gender;	
+		            	 
+		            	 $scope.person.attributes = [{
+		       		      attributeType:$rootScope.phone1, value:output.rows.item(0).phone1number
+		       		    },{
+		       		      attributeType:$rootScope.phone2, value:output.rows.item(0).phone2number
+		       		    },{
+		       		      attributeType:$rootScope.telephone1owner, value:output.rows.item(0).phone1_owner
+		       		    },{
+		       		      attributeType:$rootScope.telephone2owner, value:output.rows.item(0).phone2_owner
+		       		    },{
+		       		      attributeType:$rootScope.govtid, value:output.rows.item(0).govtid
+		       		    }];	 
+		            	 
+		  $scope.patient = {
+		    identifiers:[{identifierType:$rootScope.identifierType1,identifier:output.rows.item(0).patientid,location:$rootScope.location}],
 		    person: $scope.person
 		  }; 
 		  
+		 console.log("Person attributes are "+$scope.person.attributes);
 		 console.log("Patient JSON : "+angular.toJson($scope.patient));
 		//build final Payload 	
 							 
@@ -1566,7 +1574,7 @@ var queryIndentifiers = "Select identifierType1, patientid, location,  encounter
     $scope.observations = {
                 patient: $stateParams.uuid,
                 encounterType: $rootScope.sputumcollection_encounter_uuid,
-                location: $rootScope.zingcuka,
+                location: $rootScope.location,
                 obs: $scope.obs
               };
     console.log("Response for encounter creation : "+angular.toJson($scope.observations));

@@ -35,7 +35,6 @@
 		<ion-item class="item-icon-left">
 			<i class="icon ion-person"></i>{{ 'AGE' | translate }}<input type="number" ng-model="person.age" placeholder="age" required/>
 		</ion-item>	
-
 		<ion-item class="item-icon-left">
 			<i class="icon ion-transgender"></i>
 			<label class="item-input item-select">
@@ -47,8 +46,7 @@
 			      <option value="F" selected>Female</option>
 			    </select>
 			  </label>
-			</ion-item>
-		
+			</ion-item>	
 	</div>
 	<div class="card">	
 	<div class="item item-divider item-text-wrap item-balanced">{{ 'OCCUPATION' | translate }}</div>
@@ -183,8 +181,7 @@
 			<div class="item item-divider item-text-wrap" >{{ 'TOBACCO' | translate}}</div>
 				  <ion-radio name="tobacco" ng-model="newpatient.tobacco" ng-value="'{{yes}}'" >{{ 'YES' | translate}}</ion-radio>
 				  <ion-radio name="tobacco" ng-model="newpatient.tobacco" ng-value="'{{no}}'" >{{ 'NO' | translate}}</ion-radio>
-				  <ion-radio name="tobacco" ng-model="newpatient.tobacco" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>
-				
+				  <ion-radio name="tobacco" ng-model="newpatient.tobacco" ng-value="'{{unknown}}'" >{{ 'UNKNOWN' | translate}}</ion-radio>				
 	</div>
 
 	<div class="card">
