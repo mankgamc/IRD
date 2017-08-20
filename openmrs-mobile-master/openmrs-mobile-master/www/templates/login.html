@@ -1,4 +1,4 @@
-﻿<ion-modal-view ng-controller="AppCtrl">
+<ion-modal-view ng-controller="AppCtrl">
   
   <ion-content class="padding">
     <div class="card">
@@ -6,6 +6,9 @@
         <img src="img/tims.jpg" height="200px" width="100%" />
       </div>
     </div>
+    
+    <form name='loginForm' >
+    
     <div class="list">
       <div ng-show="login.username==='admin' && login.password==='Admin123'"><label class="item item-input">
         <span class="input-label">{{ 'LOGIN_HOST_LABEL' | translate }}</span>
@@ -13,11 +16,11 @@
       </label></div>
       <label class="item item-input">
         <span class="input-label">{{ 'LOGIN_USERNAME_LABEL' | translate }}</span>
-        <input type="text" ng-model="login.username">
+        <input type="text" ng-model="login.username" required>
       </label>
       <label class="item item-input">
         <span class="input-label">{{ 'LOGIN_PASSWORD_LABEL' | translate }}</span>
-        <input type="password" ng-model="login.password">
+        <input type="password" ng-model="login.password" required>
       </label>
       <div style="text-align: center;" >
         <div class="list list-inset">      
@@ -26,22 +29,19 @@
           <ion-radio ng-model="choice" ng-click="switchLanguage('pt')" style="display: inline-block">{{ 'LANG_pt' | translate }}</ion-radio>
           <ion-radio ng-model="choice" ng-click="switchLanguage('en')" style="display: inline-block">{{ 'LANG_en' | translate }}</ion-radio>
         </div>
-      </div>
-	  
-	
-<!--
+      </div>	  
 	<div class="item item-divider item-text-wrap">	  
-           <ion-checkbox ng-model="" ng-init="" >Work Offline </ion-checkbox>	  
-	  </div>
--->
-				  
+           <ion-checkbox ng-model="login.offline" ng-init="login.offline = false" >Work Offline </ion-checkbox>	  
+	</div>				  
 	  </div>
     </div>
     <div style="text-align: center;" >
-      <button class="button button-positive" ng-click="login(login.host, login.username, login.password)">{{ 'LOGIN' | translate }}</button>
+      <button ng-disabled="loginForm.$invalid" class="button button-positive" ng-click="login(login.host, login.username, login.password, login.offline)">{{ 'LOGIN' | translate }}</button>
       <br/> <br/>
       <ion-spinner icon="spiral" ng-show="loading"></ion-spinner>
     </div>
+    </form>    
+    
   </ion-content>
 </ion-modal-view>
 

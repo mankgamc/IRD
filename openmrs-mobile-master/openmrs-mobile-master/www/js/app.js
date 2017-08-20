@@ -628,6 +628,9 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
       if(loggedIn) {
         $state.go('app.dashboard');
       }
+
+      
+   
     }
   })
 
@@ -638,6 +641,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
     controller: 'AppCtrl',
     onEnter: function($state, $translate, AuthService, TranslationService) {
       TranslationService.setLangToStored();
+      
 
       var loggedIn = AuthService.isLoggedIn();
       if(!loggedIn) {

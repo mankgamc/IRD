@@ -25,100 +25,83 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 .controller('LoginCtrl', function($scope, $state, $translate, $ionicPopup,$cordovaSQLite, ApiService, AuthService, TranslationService) {
 
-  $scope.login = function(host, username, password) {
-	
-/*	
-        var query = "INSERT INTO people2 (firstname, lastname) VALUES ('name 1','name 2')";
-        $cordovaSQLite.execute(db, query);   
-				   
-        var query = "SELECT firstname, lastname FROM people2";
-        $cordovaSQLite.execute(db, query).then(function(res) {
-            if(res.rows.length > 0) {
-                console.log("SELECTED -> " + res.rows.item(0).firstname + " " + res.rows.item(0).lastname);
-            } else {
-                console.log("No results found");
-            }
-        }, function (err) {
-            console.log(err);
-        }); */	
-    
-    if(!host) {
-     // host = 'http://adpptimsmhealth.dedicated.co.za:8080/timsTest/'	 
-	// host = 'http://localhost:8085/timsZambia/'
-	 
-	 host = 'http://tims.dedicated.co.za:8080/timslocal/'
-    }
-    var prefix = 'http://';
-    if (host.substr(0, prefix.length) !== prefix) {
-      host = prefix + host;
-    }
-
-    $scope.loading = true;
-    if(AuthService.isLoggedIn()) {
-      $ionicPopup.alert({
-        title: TranslationService.login_error_title + ' ' + host,
-        template: TranslationService.login_error_session
-      });
-      $scope.loading = false;
-    }
-
-    ApiService.isHostValid(host, function(passed) {
-      if(!passed) {
-        $ionicPopup.alert({
-          title: TranslationService.login_error_title + ' ' + host,
-          template: TranslationService.login_error_host
-        });
-      }
-      $scope.loading = false;
-    });
-
-    if(username && password) {
-      ApiService.authenticate(host, username, password, function(result) {
-        if(result.authenticated) {
-          console.log("Login result = " +result.toString());
+  $scope.login = function(host, username, password, offline) {
+	  
+	  if(!host) {
+			 host = 'http://tims.dedicated.co.za:8080/timslocal/'
+		    }
+	    var prefix = 'http://';
+	    if (host.substr(0, prefix.length) !== prefix) {
+	      host = prefix + host;
+	    }
+	    
+	  if (offline){
+		  
           AuthService.setUsername(username);
           AuthService.setHost(host);
-          AuthService.setSession(result.sessionId);
-          AuthService.setPassword(password);
-          $state.transitionTo('app.dashboard');
-        } else {
-          $ionicPopup.alert({
-            title:  TranslationService.login_error_title + ' ' + host,
-            template: TranslationService.login_error_userpass
-          });
-        }
-        $scope.loading = false;
-      });
-    } else {
-      $scope.loading = false;
-    }
+          AuthService.setSession('903ECA2BD81D1E02195FC3681A4E902');
+          AuthService.setPassword(password);          
+		  $state.transitionTo('app.dashboard');		 
+	  }  
+	  
+	  else {
+			    $scope.loading = true;
+			    if(AuthService.isLoggedIn()) {
+			      $ionicPopup.alert({
+			        title: TranslationService.login_error_title + ' ' + host,
+			        template: TranslationService.login_error_session
+			      });
+			      $scope.loading = false;
+			    }
+
+			    ApiService.isHostValid(host, function(passed) {
+			      if(!passed) {
+			        $ionicPopup.alert({
+			          title: TranslationService.login_error_title + ' ' + host,
+			          template: TranslationService.login_error_host
+			        });
+			      }
+			      $scope.loading = false;
+			    });
+
+			    if(username && password) {
+			      ApiService.authenticate(host, username, password, function(result) {
+			        if(result.authenticated) {
+			          console.log("Login result = " +result.toString());
+			          AuthService.setUsername(username);
+			          AuthService.setHost(host);
+			          AuthService.setSession(result.sessionId);
+			          AuthService.setPassword(password);
+			          
+			          //sync offline data data here
+			          
+			          
+			          
+			          
+			                               
+			          $state.transitionTo('app.dashboard');    
+			                  
+			          
+			        } else {
+			          $ionicPopup.alert({
+			            title:  TranslationService.login_error_title + ' ' + host,
+			            template: TranslationService.login_error_userpass
+			          });
+			        }
+			        $scope.loading = false;
+			      });
+			    } else {
+			      $scope.loading = false;
+			    }		
+		  
+		  
+	  }
+   
+    
 	
 	
-	
-	
-	//Test Offline Functionality
-	
-	    $scope.insert = function(firstname, lastname) {
-        var query = "INSERT INTO people (firstname, lastname) VALUES (?,?)";
-        $cordovaSQLite.execute(db, query, [firstname, lastname]).then(function(res) {
-            console.log("INSERT ID -> " + res.insertId);
-        }, function (err) {
-            console.error(err);
-        });
-    }
- 
-    $scope.select = function(lastname) {
-        var query = "SELECT firstname, lastname FROM people WHERE lastname = ?";
-        $cordovaSQLite.execute(db, query, [lastname]).then(function(res) {
-            if(res.rows.length > 0) {
-                console.log("SELECTED -> " + res.rows.item(0).firstname + " " + res.rows.item(0).lastname);
-            } else {
-                console.log("No results found");
-            }
-        }, function (err) {
-            console.error(err);
-        });
-    }
+
+
   }
 
   $scope.logout = function() {
@@ -343,9 +326,9 @@ do_hiv_test:  $rootScope.unknown
         $scope.person.birthdate = date;
         
         console.log(date);
+        var selectedTime = new Date($scope.person.birthdate).getTime();        
         
-        
-        var ageDifMs = Date.now() - $scope.attributes.birthdate.getTime();
+        var ageDifMs = Date.now() - selectedTime;
         var ageDate = new Date(ageDifMs); // miliseconds from epoch
         $scope.attributes.age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
