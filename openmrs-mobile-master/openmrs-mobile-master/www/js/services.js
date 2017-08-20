@@ -89,7 +89,57 @@ angular.module('openmrs.services', [])
       }
     });
   }
-
+  
+  this.postOffline = function(host, endpoint, opts, data, handle) {
+	/*
+	
+	  alert(host);
+	  alert(btoa(opts['username'] + ':' + opts['password']));
+	  
+	  alert(host+'ws/rest/v1/'+endpoint);
+	  
+	  */
+	  
+    console.log("Data : "+data);
+    var async = true;
+    var cache = false;
+    if(opts['async']) 
+      async = opts['async'];
+    if(opts['cache']) 
+      cache = opts['cache'];
+    $.ajax({
+      beforeSend: function(xhr) {
+        if(opts['username']) {
+          if(opts['password']) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(opts['username'] + ':' + opts['password']));
+          } else {
+            throw "[CallService:post] Missing argument: 'password'.";
+          }
+        } 
+        else {
+          // If opts does not match any argument, call host endpoint with no headers.
+        }
+      },
+      method: 'POST',
+      url: host + 'ws/rest/v1/' + endpoint,
+      data: data,
+      contentType:'application/json' ,
+      cache: cache,
+      async: async,
+      success: function(res) { 
+        res.passed = true;
+		   
+        console.log(res);
+        handle(res); 
+      },
+      error: function(res) {
+        res.passed = false; 
+		//alert (res.status);
+	
+        handle(res); 
+      }
+    });
+  }
 })
 
 .service('ApiService', function(AuthService, CallService) {
@@ -141,6 +191,23 @@ angular.module('openmrs.services', [])
       handle(res);
     });
   }
+  
+  
+  this.createPatientOffline = function(data, handle) { 
+ // alert(data);
+    return CallService.postOffline(AuthService.getHost(), 'patient', {'username' : AuthService.getUsername(), 'password' : AuthService.getPassword()},
+    data, function(res) {
+      handle(res);
+    });
+  }
+  
+  this.createEncounterOffline = function(data, handle) { 
+	    return CallService.postOffline(AuthService.getHost(), 'encounter/', {'username' : AuthService.getUsername(), 'password' : AuthService.getPassword()},
+	    data, function(res) {
+	      handle(res);
+	    });
+	  }
+
 
   this.createEncounter = function(data, handle) { 
     return CallService.post(AuthService.getHost(), 'encounter/', {'username' : AuthService.getUsername(), 'password' : AuthService.getPassword()},

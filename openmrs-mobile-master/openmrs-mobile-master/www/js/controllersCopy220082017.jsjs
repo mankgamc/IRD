@@ -23,7 +23,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 })
 
-.controller('LoginCtrl', function($scope, $state, $translate, $ionicPopup,$cordovaSQLite, ApiService, AuthService, TranslationService, $rootScope) {
+.controller('LoginCtrl', function($scope, $state, $translate, $ionicPopup,$cordovaSQLite, ApiService, AuthService, TranslationService) {
 
   $scope.login = function(host, username, password, offline) {
 	  
@@ -35,7 +35,8 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 	      host = prefix + host;
 	    }
 	    
-	  if (offline){		  
+	  if (offline){
+		  
           AuthService.setUsername(username);
           AuthService.setHost(host);
           AuthService.setSession('903ECA2BD81D1E02195FC3681A4E902');
@@ -73,464 +74,14 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 			          AuthService.setPassword(password);
 			          
 			          //sync offline data data here
-			          //begin
-			          
-			      
-			          
-			  //       timsDb = $cordovaSQLite.openDB("timsstore.db");
-			          
-			        var querySelect = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters";							
-					  
-						//Build screening Payload from the Local Database			
-					var querySelectQrCode = "Select DISTINCT qrCode  FROM tbltimsLocalEncounters";		
-					
-					$scope.patientid = ' ';
-					  $scope.address = {
-					    address1: ' ',
-					    address2: ' ',
-					    longitude: ' ',
-					    latitude: ' '
-					  };
-					  $scope.contacts = {
-					    
-					  };
-					  $scope.names = {
-					    givenName:'',
-					    familyName : '',};
-
-
-					  $scope.person = {
-					    age: '',
-					    birthdate:'',
-					    gender:'',
-
-					    addresses:[$scope.address],
-					    names:[$scope.names], 
-					    attributes:''
-					  };
-					  					  
-												
-					$cordovaSQLite.execute(timsDb,querySelectQrCode).then(function(res) {
-					             if(res.rows.length > 0) {
-					            	 
-					            	 $scope.submitloading = true;
-									 for (i = 0; i < res.rows.length; i++) {
-					 // $scope.person = [];
-					  $scope.patient =[]; 
-					  $scope.obs = [] ; 
-					  $scope.newpatient =[]; 
-					  $scope.observations = {};
-
-					 
-			var queryObservation = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters where qrCode = " + "'"+ res.rows.item(i).qrCode+ "';";	
-
-			var queryIndentifiers = "Select govtid, phone1number , phone2number , phone2_owner , phone1_owner,identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, DATETIME(birthdate), gender  from tbltimsLocalidentifiers where patientid = "+ "'"+ res.rows.item(i).qrCode+ "';";	
-			
-			var deleteObservationsLocalDB = "delete from tbltimsLocalEncounters where qrCode = " + "'"+ res.rows.item(i).qrCode+ "';";
-			var deletePatientLocalDB = "delete from tbltimsLocalidentifiers where patientid = "+ "'"+ res.rows.item(i).qrCode+ "';"; 
-							
-							//build Person 			
-			$cordovaSQLite.execute(timsDb,queryObservation).then(function(results) { 		   	
-					                  	 
-					            	 
-					            	 	            	 
-				if(results.rows.length > 0) {
-									 
-									  for (j = 0; j < results.rows.length; j++) {
-										  			
-											
-					if ($rootScope.miner   === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.miner = results.rows.item(j).value;					
-											
-										}
-						
-					if ($rootScope.exminer     === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.exminer = results.rows.item(j).value;				
-											
-										}		
-
-					if ($rootScope.family_miner      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.family_miner  = results.rows.item(j).value;					
-											
-										}	
-
-
-					if ($rootScope.open_pit === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.open_pit  = results.rows.item(j).value;					
-											
-										}
-
-					if ($rootScope.underground      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.underground  = results.rows.item(j).value;					
-											
-										}
-					if ($rootScope.artisinal      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.artisinal  = results.rows.item(j).value;					
-											
-										}	
-					if ($rootScope.gold      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.gold  = results.rows.item(j).value;					
-											
-										}	
-
-					if ($rootScope.coal      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.coal  = results.rows.item(j).value;					
-											
-										}
-
-
-					if ($rootScope.diamond      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.diamond  = results.rows.item(j).value;					
-											
-										}						
-																
-					if ($rootScope.sandstone      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.sandstone  = results.rows.item(j).value;					
-											
-										}
-
-					if ($rootScope.copper      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.copper  = results.rows.item(j).value;					
-											
-										}	
-					if ($rootScope.platinum      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.platinum  = results.rows.item(j).value;					
-											
-										}						
-																			
-					if ($rootScope.magnesium      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.magnesium  = results.rows.item(j).value;					
-											
-										}						
-										
-
-					if ($rootScope.iron_ore      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.iron_ore  = results.rows.item(j).value;					
-											
-										}							
-								
-
-					if ($rootScope.uranium === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.uranium  = results.rows.item(j).value;					
-											
-										}					
-					if ($rootScope.mining_years      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.mining_years  = parseInt(results.rows.item(j).value);					
-											
-										}
-										
-					if ($rootScope.mbe      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.mbe  = results.rows.item(j).value;					
-											
-										}
-										
-					if ($rootScope.cough      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.cough  = results.rows.item(j).value;					
-											
-										}
-
-					         
-					if ($rootScope.hemoptysis      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.hemoptysis  = results.rows.item(j).value;					
-											
-										}
-										
-					if ($rootScope.fever      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.fever  = results.rows.item(j).value;					
-											
-										}
-
-										
-													
-					if ($rootScope.night_sweats      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.night_sweats  = results.rows.item(j).value;					
-											
-										}
-										
-					if ($rootScope.weight_loss      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.weight_loss  = results.rows.item(j).value;					
-											
-										}
-
-					if ($rootScope.fatigue      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.fatigue  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.appetite_loss === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.appetite_loss  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.chest_pain      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.chest_pain  = results.rows.item(j).value;					
-											
-										}
-										
-															
-					if	($rootScope.contact_with_tb      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.contact_with_tb  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.tb_treatment_past      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.tb_treatment_past  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.tb_treatment_past_duration      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.tb_treatment_past_duration  = parseInt(results.rows.item(j).value);					
-											
-										}
-										
-					if	($rootScope.diabetes      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.diabetes  = results.rows.item(j).value;					
-											
-										}
-						
-					if	($rootScope.tobacco  === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.tobacco  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.hiv_test_before === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.hiv_test_before  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.Hiv_status_disclose      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.Hiv_status_disclose  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.last_hiv_result      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.last_hiv_result  = results.rows.item(j).value;					
-											
-										}
-										
-					if	($rootScope.arv_status      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.arv_status  = results.rows.item(j).value;	
-											
-										}
-										
-																								if	($rootScope.do_hiv_test      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.do_hiv_test  = results.rows.item(j).value;					
-											
-										}
-										
-																								if	($rootScope.suspect      === results.rows.item(j).fieldnameUUID)
-										{
-											$scope.newpatient.suspect  = results.rows.item(j).value;					
-											
-										}				
-										  
-									   
-					 						
-								 }}},  function (err) {
-					            console.log(err);
-					        });					        
-
-
-					//Build Patient
-					
-							$cordovaSQLite.execute(timsDb,queryIndentifiers).then(function(output) {
-								
-								
-							  	 for (k = 0; k < output.rows.length; k++) {
-						            	
-				            		 console.log("query for identifiers "+output.rows.item(k).givenName);
-				            		 
-				            	 }
-				            	           	
-								
-								
-					             if(output.rows.length > 0) {
-					
-					  $scope.person.addresses = [{address1: output.rows.item(0).address1,
-					    address2: output.rows.item(0).address2,
-					    longitude: output.rows.item(0).longitude,
-					  latitude: output.rows.item(0).latitude}];
-							  
-					  
-					  $scope.person.names = [{
-					  givenName:output.rows.item(0).givenName,
-					  familyName : output.rows.item(0).familyName}];
-					  $scope.person.age = output.rows.item(0).age;
-					 $scope.person.birthdate = output.rows.item(0).birthdate;
-					  $scope.person.gender	= output.rows.item(0).gender;	
-					            	 
-					            	 $scope.person.attributes = [{
-					       		      attributeType:$rootScope.phone1, value:output.rows.item(0).phone1number
-					       		    },{
-					       		      attributeType:$rootScope.phone2, value:output.rows.item(0).phone2number
-					       		    },{
-					       		      attributeType:$rootScope.telephone1owner, value:output.rows.item(0).phone1_owner
-					       		    },{
-					       		      attributeType:$rootScope.telephone2owner, value:output.rows.item(0).phone2_owner
-					       		    },{
-					       		      attributeType:$rootScope.govtid, value:output.rows.item(0).govtid
-					       		    }];	 
-					            	 
-					  $scope.patient = {
-					    identifiers:[{identifierType:$rootScope.identifierType1,identifier:output.rows.item(0).patientid,location:$rootScope.location}],
-					    person: $scope.person
-					  }; 
-					  
-					 console.log("Person attributes are "+$scope.person.attributes);
-					 console.log("Patient JSON : "+angular.toJson($scope.patient));
-					//build final Payload 	
-										 
-					//Post Patient and delete/mark as deleted from the database		
-					  
-					  ApiService.createPatientOffline(angular.toJson($scope.patient), function(res) {
-					        //start createpatient
-					      console.log("Response : "+res);
-					      $scope.patientResult = res;
-					      console.log("Response uuid : "+$scope.patientResult.uuid);
-					      $scope.observations.patient = $scope.patientResult.uuid;
-
-					      $scope.loading = false;
-					                
-					              var patient = angular.toJson($scope.patient);
-					              var encounter = angular.toJson($scope.observations);
-					              console.log("Encounter Object : "+encounter);
-					              $scope.obs = [
-					                { concept: $rootScope.miner           , value: $scope.newpatient.miner },
-					                { concept: $rootScope.exminer         , value: $scope.newpatient.exminer },
-					                { concept: $rootScope.family_miner    , value: $scope.newpatient.family_miner },
-					                { concept: $rootScope.family_exminer  , value: $scope.newpatient.family_exminer },
-					                { concept: $rootScope.open_pit         , value: $scope.newpatient.openpit },
-					                { concept: $rootScope.underground     , value: $scope.newpatient.underground },
-					                { concept: $rootScope.artisinal       , value: $scope.newpatient.artisinal },
-					                { concept: $rootScope.gold           , value: $scope.newpatient.gold },
-					                { concept: $rootScope.coal           , value: $scope.newpatient.coal },
-					                { concept: $rootScope.diamond           , value: $scope.newpatient.diamond },
-					                { concept: $rootScope.sandstone           , value: $scope.newpatient.sandstone },
-					                { concept: $rootScope.copper           , value: $scope.newpatient.copper },
-					                { concept: $rootScope.platinum           , value: $scope.newpatient.platinum },
-					                { concept: $rootScope.magnesium           , value: $scope.newpatient.magnesium },
-					                { concept: $rootScope.iron_ore           , value: $scope.newpatient.ironore },
-					                { concept: $rootScope.uranium           , value: $scope.newpatient.uranium },
-					                { concept: $rootScope.mining_years           , value: $scope.newpatient.mining_years },
-					                { concept: $rootScope.mbe                     , value: $scope.newpatient.mbe },
-					                { concept: $rootScope.cough                       , value: $scope.newpatient.cough },
-					                { concept: $rootScope.hemoptysis               , value: $scope.newpatient.hemoptysis },
-					                { concept: $rootScope.fever                       , value: $scope.newpatient.fever },
-					                { concept: $rootScope.night_sweats                , value: $scope.newpatient.night_sweats },
-					                { concept: $rootScope.weight_loss                 , value: $scope.newpatient.weight_loss },
-					                { concept: $rootScope.fatigue                     , value: $scope.newpatient.fatigue },
-					                { concept: $rootScope.appetite_loss               , value: $scope.newpatient.appetite_loss },
-					                { concept: $rootScope.chest_pain                  , value: $scope.newpatient.chest_pain },
-					                { concept: $rootScope.contact_with_tb             , value: $scope.newpatient.contact_with_tb },
-					                { concept: $rootScope.tb_treatment_past           , value: $scope.newpatient.tb_treatment_past },
-					                { concept: $rootScope.tb_treatment_past_duration  , value: $scope.newpatient.tb_treatment_past_duration },
-					                { concept: $rootScope.diabetes                    , value: $scope.newpatient.diabetes },
-					                { concept: $rootScope.tobacco                     , value: $scope.newpatient.tobacco },
-					                { concept: $rootScope.hiv_test_before             , value: $scope.newpatient.hiv_test_before },
-					                { concept: $rootScope.Hiv_status_disclose         , value: $scope.newpatient.Hiv_status_disclose },
-					                { concept: $rootScope.last_hiv_result             , value: $scope.newpatient.last_hiv_result },
-					                { concept: $rootScope.arv_status                  , value: $scope.newpatient.arv_status },
-					                { concept: $rootScope.do_hiv_test                 , value: $scope.newpatient.do_hiv_test },
-					                { concept: $rootScope.suspect                     , value: $scope.newpatient.suspect }
-					              ];
-					              
-					              $scope.observations = {
-					              patient: $scope.patientResult.uuid,//96cc3fd6-2fea-4e39-bcfb-e48a388f8a8a', // note that you need to post UUIDs here: RESTWS-459
-					              encounterType: $rootScope.screening_encounter_uuid,
-					              location: $rootScope.location,
-					              obs: $scope.obs
-					            };							
-								
-					 ApiService.createEncounterOffline(angular.toJson($scope.observations), function(res){
-					                console.log("Response for encounter creation : "+res);
-					                
-					              //If successful delete patient and observations locally  		
-					    			
-						if (res.status === 200){							
-							 $cordovaSQLite.execute(timsDb, deleteObservationsLocalDB).then(function(resu) {
-							        console.log(resu);
-							        }, function (err) {
-							        console.log(err);
-							        }); 
-								
-								$cordovaSQLite.execute(timsDb, deletePatientLocalDB).then(function(resu) {
-							        console.log(resu);
-							        }, function (err) {
-							        console.log(err);
-							        });				                		
-						}
-	   });
-					        //end of create patient
-					 
-					/* 
-					 $scope.submitloading = false;
-					        $scope.$apply();
-					        $cordovaToast.showLongBottom('Form submitted').then(function(success) {
-					            // success
-							this.addNewPatientForm.reset();
-								
-					          }, function (error) {
-					            // error
-					          });
-					*/  
-					        
-					    });
-					 						
-					            }
-					        }, function (err) {
-					            console.log(err);
-					        });	
-										 
-			 
-							
-					}									 
-					$scope.submitloading = false; 
-									 }
-					        }, function (err) {
-					            console.log(err);
-					        });                    
 			          
 			          
-			          //end       
-			                           
+			          
+			          
 			                               
 			          $state.transitionTo('app.dashboard');    
-			                  			          
+			                  
+			          
 			        } else {
 			          $ionicPopup.alert({
 			            title:  TranslationService.login_error_title + ' ' + host,
@@ -541,7 +92,9 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 			      });
 			    } else {
 			      $scope.loading = false;
-			    }		  
+			    }		
+		  
+		  
 	  }
    
     
@@ -662,7 +215,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 
 
-.controller('NewPatientCtrl', function($scope, $stateParams, $rootScope, $cordovaGeolocation, $cordovaBarcodeScanner,$cordovaToast, $ionicScrollDelegate, $cordovaDatePicker, ApiService, $cordovaSQLite, $ionicPopup) {
+.controller('NewPatientCtrl', function($scope, $stateParams, $rootScope, $cordovaGeolocation, $cordovaBarcodeScanner,$cordovaToast, $ionicScrollDelegate, $cordovaDatePicker, ApiService, $cordovaSQLite) {
 
   $scope.setSuspect = function(){
     if($scope.newpatient.cough === $scope.yes || $scope.newpatient.hemoptysis === $scope.yes || $scope.newpatient.fever === $scope.yes ||
@@ -812,7 +365,8 @@ do_hiv_test:  $rootScope.unknown
 	   if (offline){		   
 			alert('GPS LOCATION _________ '+$scope.address.latitude + ' : '+$scope.address.longitude);
 		    $scope.submitloading = true;
-		    console.log("Phone number 2 : "+$scope.newpatient.phone2number);			
+		    console.log("Phone number 2 : "+$scope.newpatient.phone2number);
+			
 		//Create a person and patient 	
 		 var query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+$rootScope.phone2 + "'"+ ","+ "'"+$scope.newpatient.phone2number + "'"+ ","+   "'"+$scope.newpatient.patientid + "'"+ "," + "'"+ $rootScope.screening_encounter_uuid + "'"+ ")";	
 		
@@ -822,7 +376,8 @@ do_hiv_test:  $rootScope.unknown
 		        console.log(res);
 		        }, function (err) {
 		        console.log(err);
-		        });					
+		        });
+						
 					 
 		query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.phone1 + "'"+ ","+"'"+ $scope.newpatient.phone1number + "'"+ ","+"'"+$scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";	
 			
@@ -863,9 +418,14 @@ do_hiv_test:  $rootScope.unknown
 		        console.log(res);
 		        }, function (err) {
 		        console.log(err);
-		        });   
-			    			    		    
-			    				
+		        });  
+			    
+			    
+			    
+			    
+			    
+			    
+					
 				query = "INSERT INTO tbltimsLocalidentifiers(identifierType1, patientid, location,  encountertype, address1, address2, longitude, latitude,  givenName, familyName, age, birthdate, gender," +
 				"phone1number, phone2number, phone2_owner, phone1_owner, govtid ) VALUES (" + "'"+ $rootScope.identifierType1 + "'"+ ","+ "'"+ $scope.newpatient.patientid +
 				"'"+ ","+ "'"+  $rootScope.zingcuka + "'"+ "," + "'"+
@@ -880,7 +440,48 @@ do_hiv_test:  $rootScope.unknown
 		        }, function (err) {
 		        console.log(err);
 		        });  	
-						
+			
+			/*
+		    $scope.person.attributes = [{
+		      attributeType:$rootScope.phone1, value:$scope.newpatient.phone1number
+		    },{
+		      attributeType:$rootScope.phone2, value:$scope.newpatient.phone2number
+		    },{
+		      attributeType:$rootScope.telephone1owner, value:$scope.newpatient.phone1_owner
+		    },{
+		      attributeType:$rootScope.telephone2owner, value:$scope.newpatient.phone2_owner
+		    },{
+		      attributeType:$rootScope.govtid, value:$scope.newpatient.govt_id
+		    }];
+				
+			
+		    $scope.patient = {
+		    identifiers:[{identifierType:$rootScope.identifierType1,
+			identifier:$scope.newpatient.patientid,
+			location:$rootScope.zingcuka}],
+		    person: $scope.person
+		  };
+		  
+		  */
+		  
+		  
+		   // console.log("Patient JSON : "+ "'"+angular.toJson($scope.patient));
+		    
+		    //ApiService.createPatient(angular.toJson($scope.patient), function(res) {
+		        //start createpatient
+		     // console.log("Response : "+ "'"+res);
+		  //    $scope.patientResult = res;
+		      //console.log("Response uuid : "+ "'"+$scope.patientResult.uuid);
+		      
+			  
+			  //$scope.observations.patient = $scope.patientResult.uuid;
+
+		    //  $scope.loading = false;
+		                
+		            //  var patient = angular.toJson($scope.patient);
+		            //  var encounter = angular.toJson($scope.observations);
+		             // console.log("Encounter Object : "+ "'"+encounter);
+					 
 			query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (" + "'"+ $rootScope.miner  + "'"+ ","+ "'"+ $scope.newpatient.miner + "'"+ ","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid + "'"+ ")";			 
 					 
 				$cordovaSQLite.execute(timsDb, query).then(function(res) {
@@ -1184,7 +785,8 @@ do_hiv_test:  $rootScope.unknown
 		        });  
 				
 		query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.arv_status                  + "'"+","+ "'"+  $scope.newpatient.arv_status + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
-			 
+
+				 
 				$cordovaSQLite.execute(timsDb, query).then(function(res) {
 		        console.log(res);
 		        }, function (err) {
@@ -1200,30 +802,45 @@ do_hiv_test:  $rootScope.unknown
 		        });  
 				
 		query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES ("+ "'"+                  $rootScope.suspect                     + "'"+","+ "'"+  $scope.newpatient.suspect + "'"+","+ "'"+  $scope.newpatient.patientid + "'"+ "," + "'"+  $rootScope.screening_encounter_uuid+ "'"+ ")";
+
 				 
 				$cordovaSQLite.execute(timsDb, query).then(function(res) {
 		        console.log(res);
 		        }, function (err) {
 		        console.log(err);
 		        });  	
-	
-				$ionicPopup.alert({
-				        title:'Offline Storage' ,
-				        template: "<p>Patient Data Saved Offline<p/>"
-				 });
-				 
-				 $scope.submitloading = false;
-				  				
-			//	this.addNewPatientForm.reset();	
+					 
+		             
+					 /*
+		              $scope.observations = {
+		              patient: $scope.patientResult.uuid,//96cc3fd6-2fea-4e39-bcfb-e48a388f8a8a', // note that you need to post UUIDs here: RESTWS-459
+		              encounterType: $rootScope.screening_encounter_uuid,
+		              location: $rootScope.location,
+		              obs: $scope.obs
+		            };	
+					
+					**/
+
+			// timsDb = $cordovaSQLite.openDB("tims.db");
+		       //     $cordovaSQLite.execute(timsDb, "CREATE TABLE tblTBScreenings(latitude text, longitude text, phone2number text)");	  
+			   
+			
 				
 				
 				
-		// Sync with the server starts here 
-	/*			
-	var querySelect = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters";			
+				
+				//Create encounters	
+				
+		       /*	
+				var query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (fieldnameUUID, value , qrCode ,  encountertype )";	
+				
+				**/
+				
+						
+		var querySelect = "Select fieldnameUUID, value , qrCode ,  encountertype FROM tbltimsLocalEncounters";			
 				
 		  
-			//Build screening Payload from the Local Database			
+			//Build screening payload from the Local Database			
 			var querySelectQrCode = "Select DISTINCT qrCode  FROM tbltimsLocalEncounters";				
 									
 			$cordovaSQLite.execute(timsDb,querySelectQrCode).then(function(res) {
@@ -1619,124 +1236,150 @@ $cordovaSQLite.execute(timsDb,queryObservation).then(function(results) {
 		        }, function (err) {
 		            console.log(err);
 		        });
-			
-			
-			*/
 			}
 	   else
-		{  
-		     alert('GPS LOCATION _________ '+$scope.address.latitude + ' : '+$scope.address.longitude);
-		     $scope.submitloading = true;
-		     console.log("Phone number 2 : "+$scope.newpatient.phone2number);
-		     $scope.person.attributes = [{
-		       attributeType:$rootScope.phone1, value:$scope.newpatient.phone1number
-		     },{
-		       attributeType:$rootScope.phone2, value:$scope.newpatient.phone2number
-		     },{
-		       attributeType:$rootScope.telephone1owner, value:$scope.newpatient.phone1_owner
-		     },{
-		       attributeType:$rootScope.telephone2owner, value:$scope.newpatient.phone2_owner
-		     },{
-		       attributeType:$rootScope.govtid, value:$scope.newpatient.govt_id
-		     }];
-		     $scope.patient = {
-		     identifiers:[{identifierType:$rootScope.identifierType1,identifier:$scope.newpatient.patientid,location:$rootScope.zingcuka}],
-		     person: $scope.person
-		   };
-		     console.log("Patient JSON : "+angular.toJson($scope.patient));
-		     
-		     ApiService.createPatient(angular.toJson($scope.patient), function(res) {
-		         //start createpatient
-		       console.log("Response : "+res);
-		       $scope.patientResult = res;
-		       console.log("Response uuid : "+$scope.patientResult.uuid);
-		       $scope.observations.patient = $scope.patientResult.uuid;
-
-		       $scope.loading = false;
-		                 
-		               var patient = angular.toJson($scope.patient);
-		               var encounter = angular.toJson($scope.observations);
-		               console.log("Encounter Object : "+encounter);
-		               $scope.obs = [
-		                 { concept: $rootScope.miner           , value: $scope.newpatient.miner },
-		                 { concept: $rootScope.exminer         , value: $scope.newpatient.exminer },
-		                 { concept: $rootScope.family_miner    , value: $scope.newpatient.family_miner },
-		                 { concept: $rootScope.family_exminer  , value: $scope.newpatient.family_exminer },
-		                 { concept: $rootScope.open_pit         , value: $scope.newpatient.openpit },
-		                 { concept: $rootScope.underground     , value: $scope.newpatient.underground },
-		                 { concept: $rootScope.artisinal       , value: $scope.newpatient.artisinal },
-		                 { concept: $rootScope.gold           , value: $scope.newpatient.gold },
-		                 { concept: $rootScope.coal           , value: $scope.newpatient.coal },
-		                 { concept: $rootScope.diamond           , value: $scope.newpatient.diamond },
-		                 { concept: $rootScope.sandstone           , value: $scope.newpatient.sandstone },
-		                 { concept: $rootScope.copper           , value: $scope.newpatient.copper },
-		                 { concept: $rootScope.platinum           , value: $scope.newpatient.platinum },
-		                 { concept: $rootScope.magnesium           , value: $scope.newpatient.magnesium },
-		                 { concept: $rootScope.iron_ore           , value: $scope.newpatient.ironore },
-		                 { concept: $rootScope.uranium           , value: $scope.newpatient.uranium },
-		                 { concept: $rootScope.mining_years           , value: $scope.newpatient.mining_years },
-		                 { concept: $rootScope.mbe                     , value: $scope.newpatient.mbe },
-		                 { concept: $rootScope.cough                       , value: $scope.newpatient.cough },
-		                 { concept: $rootScope.hemoptysis               , value: $scope.newpatient.hemoptysis },
-		                 { concept: $rootScope.fever                       , value: $scope.newpatient.fever },
-		                 { concept: $rootScope.night_sweats                , value: $scope.newpatient.night_sweats },
-		                 { concept: $rootScope.weight_loss                 , value: $scope.newpatient.weight_loss },
-		                 { concept: $rootScope.fatigue                     , value: $scope.newpatient.fatigue },
-		                 { concept: $rootScope.appetite_loss               , value: $scope.newpatient.appetite_loss },
-		                 { concept: $rootScope.chest_pain                  , value: $scope.newpatient.chest_pain },
-		                 { concept: $rootScope.contact_with_tb             , value: $scope.newpatient.contact_with_tb },
-		                 { concept: $rootScope.tb_treatment_past           , value: $scope.newpatient.tb_treatment_past },
-		                 { concept: $rootScope.tb_treatment_past_duration  , value: $scope.newpatient.tb_treatment_past_duration },
-		                 { concept: $rootScope.diabetes                    , value: $scope.newpatient.diabetes },
-		                 { concept: $rootScope.tobacco                     , value: $scope.newpatient.tobacco },
-		                 { concept: $rootScope.hiv_test_before             , value: $scope.newpatient.hiv_test_before },
-		                 { concept: $rootScope.Hiv_status_disclose         , value: $scope.newpatient.Hiv_status_disclose },
-		                 { concept: $rootScope.last_hiv_result             , value: $scope.newpatient.last_hiv_result },
-		                 { concept: $rootScope.arv_status                  , value: $scope.newpatient.arv_status },
-		                 { concept: $rootScope.do_hiv_test                 , value: $scope.newpatient.do_hiv_test },
-		                 { concept: $rootScope.suspect                     , value: $scope.newpatient.suspect }
-		               ];
-		               
-		               $scope.observations = {
-		               patient: $scope.patientResult.uuid,//96cc3fd6-2fea-4e39-bcfb-e48a388f8a8a', // note that you need to post UUIDs here: RESTWS-459
-		               encounterType: $rootScope.screening_encounter_uuid,
-		               location: $rootScope.location,
-		               obs: $scope.obs
-		             };	
-		 	 		
-		 			
-		             ApiService.createEncounter(angular.toJson($scope.observations), function(res){
-		                 console.log("Response for encounter creation : "+res);
-		               });
-		         //end of create patient
-		         $scope.submitloading = false;
-		         $scope.$apply();
-		         $cordovaToast.showLongBottom('Form submitted').then(function(success) {
-		             // success
-		 		this.addNewPatientForm.reset();
-		 			
-		           }, function (error) {
-		             // error
-		           });
-		     });
-
-		     $scope.patientuuid = '';
-		     $scope.name = {};
-		     $scope.attributes = {};
-		     $scope.patientResult = {};
-		     $scope.ui = {
-		     phone1myself:true,
-		     phone2myself:true
-		   };
-		 //function ends here - marker
-		 	   
-		}
+		{}
 	   
    };
    
    
-  
+  /*
+   
+  $scope.submit = function(){
+    alert('GPS LOCATION _________ '+$scope.address.latitude + ' : '+$scope.address.longitude);
+    $scope.submitloading = true;
+    console.log("Phone number 2 : "+$scope.newpatient.phone2number);
+    $scope.person.attributes = [{
+      attributeType:$rootScope.phone1, value:$scope.newpatient.phone1number
+    },{
+      attributeType:$rootScope.phone2, value:$scope.newpatient.phone2number
+    },{
+      attributeType:$rootScope.telephone1owner, value:$scope.newpatient.phone1_owner
+    },{
+      attributeType:$rootScope.telephone2owner, value:$scope.newpatient.phone2_owner
+    },{
+      attributeType:$rootScope.govtid, value:$scope.newpatient.govt_id
+    }];
+    $scope.patient = {
+    identifiers:[{identifierType:$rootScope.identifierType1,identifier:$scope.newpatient.patientid,location:$rootScope.zingcuka}],
+    person: $scope.person
+  };
+    console.log("Patient JSON : "+angular.toJson($scope.patient));
+    
+    ApiService.createPatient(angular.toJson($scope.patient), function(res) {
+        //start createpatient
+      console.log("Response : "+res);
+      $scope.patientResult = res;
+      console.log("Response uuid : "+$scope.patientResult.uuid);
+      $scope.observations.patient = $scope.patientResult.uuid;
 
+      $scope.loading = false;
+                
+              var patient = angular.toJson($scope.patient);
+              var encounter = angular.toJson($scope.observations);
+              console.log("Encounter Object : "+encounter);
+              $scope.obs = [
+                { concept: $rootScope.miner           , value: $scope.newpatient.miner },
+                { concept: $rootScope.exminer         , value: $scope.newpatient.exminer },
+                { concept: $rootScope.family_miner    , value: $scope.newpatient.family_miner },
+                { concept: $rootScope.family_exminer  , value: $scope.newpatient.family_exminer },
+                { concept: $rootScope.open_pit         , value: $scope.newpatient.openpit },
+                { concept: $rootScope.underground     , value: $scope.newpatient.underground },
+                { concept: $rootScope.artisinal       , value: $scope.newpatient.artisinal },
+                { concept: $rootScope.gold           , value: $scope.newpatient.gold },
+                { concept: $rootScope.coal           , value: $scope.newpatient.coal },
+                { concept: $rootScope.diamond           , value: $scope.newpatient.diamond },
+                { concept: $rootScope.sandstone           , value: $scope.newpatient.sandstone },
+                { concept: $rootScope.copper           , value: $scope.newpatient.copper },
+                { concept: $rootScope.platinum           , value: $scope.newpatient.platinum },
+                { concept: $rootScope.magnesium           , value: $scope.newpatient.magnesium },
+                { concept: $rootScope.iron_ore           , value: $scope.newpatient.ironore },
+                { concept: $rootScope.uranium           , value: $scope.newpatient.uranium },
+                { concept: $rootScope.mining_years           , value: $scope.newpatient.mining_years },
+                { concept: $rootScope.mbe                     , value: $scope.newpatient.mbe },
+                { concept: $rootScope.cough                       , value: $scope.newpatient.cough },
+                { concept: $rootScope.hemoptysis               , value: $scope.newpatient.hemoptysis },
+                { concept: $rootScope.fever                       , value: $scope.newpatient.fever },
+                { concept: $rootScope.night_sweats                , value: $scope.newpatient.night_sweats },
+                { concept: $rootScope.weight_loss                 , value: $scope.newpatient.weight_loss },
+                { concept: $rootScope.fatigue                     , value: $scope.newpatient.fatigue },
+                { concept: $rootScope.appetite_loss               , value: $scope.newpatient.appetite_loss },
+                { concept: $rootScope.chest_pain                  , value: $scope.newpatient.chest_pain },
+                { concept: $rootScope.contact_with_tb             , value: $scope.newpatient.contact_with_tb },
+                { concept: $rootScope.tb_treatment_past           , value: $scope.newpatient.tb_treatment_past },
+                { concept: $rootScope.tb_treatment_past_duration  , value: $scope.newpatient.tb_treatment_past_duration },
+                { concept: $rootScope.diabetes                    , value: $scope.newpatient.diabetes },
+                { concept: $rootScope.tobacco                     , value: $scope.newpatient.tobacco },
+                { concept: $rootScope.hiv_test_before             , value: $scope.newpatient.hiv_test_before },
+                { concept: $rootScope.Hiv_status_disclose         , value: $scope.newpatient.Hiv_status_disclose },
+                { concept: $rootScope.last_hiv_result             , value: $scope.newpatient.last_hiv_result },
+                { concept: $rootScope.arv_status                  , value: $scope.newpatient.arv_status },
+                { concept: $rootScope.do_hiv_test                 , value: $scope.newpatient.do_hiv_test },
+                { concept: $rootScope.suspect                     , value: $scope.newpatient.suspect }
+              ];
+              
+              $scope.observations = {
+              patient: $scope.patientResult.uuid,//96cc3fd6-2fea-4e39-bcfb-e48a388f8a8a', // note that you need to post UUIDs here: RESTWS-459
+              encounterType: $rootScope.screening_encounter_uuid,
+              location: $rootScope.location,
+              obs: $scope.obs
+            };	
+
+	// timsDb = $cordovaSQLite.openDB("tims.db");
+       //     $cordovaSQLite.execute(timsDb, "CREATE TABLE tblTBScreenings(latitude text, longitude text, phone2number text)");	
+	   
+	   
+	   
+	   
+		
+		//Create a person and patient 
+				
+		
+		
+		
+		
+		//Create encounters	
+				
+		var query = "INSERT INTO tbltimsLocalEncounters(fieldnameUUID, value , qrCode ,  encountertype ) VALUES (fieldnameUUID, value , qrCode ,  encountertype )";	
+			
+		//var querySelect = "Select latitude, longitude, phone2number FROM tblTBScreenings";
+				
+	    $cordovaSQLite.execute(timsDb, query).then(function(res) {
+        console.log(res);
+        }, function (err) {
+        console.log(err);
+        });  
+		
+
+		
+			
+            ApiService.createEncounter(angular.toJson($scope.observations), function(res){
+                console.log("Response for encounter creation : "+res);
+              });
+        //end of create patient
+        $scope.submitloading = false;
+        $scope.$apply();
+        $cordovaToast.showLongBottom('Form submitted').then(function(success) {
+            // success
+		this.addNewPatientForm.reset();
+			
+          }, function (error) {
+            // error
+          });
+    });
+
+    $scope.patientuuid = '';
+    $scope.name = {};
+    $scope.attributes = {};
+    $scope.patientResult = {};
+    $scope.ui = {
+    phone1myself:true,
+    phone2myself:true
+  };
+//function ends here - marker
+};
+
+*/
 
 
 
