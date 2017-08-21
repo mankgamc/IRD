@@ -31,12 +31,12 @@
         </div>
       </div>	  
 	<div class="item item-divider item-text-wrap">	  
-           <ion-checkbox ng-model="login.offline" ng-init="login.offline = false" >Work Offline </ion-checkbox>	  
+           <ion-checkbox ng-model="login.offlinemode" ng-init="login.offlinemode = false" >Work Offline </ion-checkbox>	  
 	</div>				  
 	  </div>
     </div>
     <div style="text-align: center;" >
-      <button ng-disabled="loginForm.$invalid" class="button button-positive" ng-click="login(login.host, login.username, login.password, login.offline)">{{ 'LOGIN' | translate }}</button>
+      <button ng-disabled="loginForm.$invalid" class="button button-positive" ng-click="login(login.host, login.username, login.password, login.offlinemode)">{{ 'LOGIN' | translate }}</button>
       <br/> <br/>
       <ion-spinner icon="spiral" ng-show="loading"></ion-spinner>
     </div>

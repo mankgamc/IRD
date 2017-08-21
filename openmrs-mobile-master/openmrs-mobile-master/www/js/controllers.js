@@ -25,9 +25,14 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 
 .controller('LoginCtrl', function($scope, $state, $translate, $ionicPopup,$cordovaSQLite, ApiService, AuthService, TranslationService, $rootScope) {
 
-  $scope.login = function(host, username, password, offline) {
+  $scope.login = function(host, username, password, offlinemode) {
 	  
-	  if(!host) {
+	  $scope.mode = function() {
+		  $rootScope.offline = offlinemode;
+	    };
+	  
+	 	  
+	  	  if(!host) {
 			 host = 'http://tims.dedicated.co.za:8080/timslocal/'
 		    }
 	    var prefix = 'http://';
@@ -35,7 +40,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 	      host = prefix + host;
 	    }
 	    
-	  if (offline){		  
+	  if (offlinemode){		  
           AuthService.setUsername(username);
           AuthService.setHost(host);
           AuthService.setSession('903ECA2BD81D1E02195FC3681A4E902');
@@ -66,6 +71,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 			    if(username && password) {
 			      ApiService.authenticate(host, username, password, function(result) {
 			        if(result.authenticated) {
+			        	 $scope.submitloading = true;
 			          console.log("Login result = " +result.toString());
 			          AuthService.setUsername(username);
 			          AuthService.setHost(host);
@@ -75,7 +81,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 			          //sync offline data data here
 			          //begin
 			          
-			      
+			         
 			          
 			  //       timsDb = $cordovaSQLite.openDB("timsstore.db");
 			          
@@ -156,11 +162,17 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 											$scope.newpatient.family_miner  = results.rows.item(j).value;					
 											
 										}	
+					
+					if ($rootScope.family_exminer      === results.rows.item(j).fieldnameUUID)
+					{
+						$scope.newpatient.family_exminer  = results.rows.item(j).value;					
+						
+					}
 
 
 					if ($rootScope.open_pit === results.rows.item(j).fieldnameUUID)
 										{
-											$scope.newpatient.open_pit  = results.rows.item(j).value;					
+											$scope.newpatient.openpit  = results.rows.item(j).value;					
 											
 										}
 
@@ -199,27 +211,27 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 											
 										}
 
-					if ($rootScope.copper      === results.rows.item(j).fieldnameUUID)
+					if ($rootScope.copper === results.rows.item(j).fieldnameUUID)
 										{
 											$scope.newpatient.copper  = results.rows.item(j).value;					
 											
 										}	
-					if ($rootScope.platinum      === results.rows.item(j).fieldnameUUID)
+					if ($rootScope.platinum === results.rows.item(j).fieldnameUUID)
 										{
 											$scope.newpatient.platinum  = results.rows.item(j).value;					
 											
 										}						
 																			
-					if ($rootScope.magnesium      === results.rows.item(j).fieldnameUUID)
+					if ($rootScope.magnesium === results.rows.item(j).fieldnameUUID)
 										{
 											$scope.newpatient.magnesium  = results.rows.item(j).value;					
 											
 										}						
 										
 
-					if ($rootScope.iron_ore      === results.rows.item(j).fieldnameUUID)
+					if ($rootScope.iron_ore === results.rows.item(j).fieldnameUUID)
 										{
-											$scope.newpatient.iron_ore  = results.rows.item(j).value;					
+											$scope.newpatient.ironore  = results.rows.item(j).value;					
 											
 										}							
 								
@@ -477,9 +489,8 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 					            };							
 								
 					 ApiService.createEncounterOffline(angular.toJson($scope.observations), function(res){
-					                console.log("Response for encounter creation : "+res);
-					                
-					              //If successful delete patient and observations locally  		
+					                console.log("Response for encounter creation : "+res);					                
+					              //If successful delete patient and observations locally  	
 					    			
 						if (res.status === 200){							
 							 $cordovaSQLite.execute(timsDb, deleteObservationsLocalDB).then(function(resu) {
@@ -518,17 +529,17 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 										 
 			 
 							
-					}									 
-					$scope.submitloading = false; 
+					}					 
+					
 									 }
 					        }, function (err) {
 					            console.log(err);
 					        });                    
 			          
 			          
-			          //end       
+			          //end     
 			                           
-			                               
+					 $scope.submitloading = false;                    
 			          $state.transitionTo('app.dashboard');    
 			                  			          
 			        } else {
@@ -538,17 +549,11 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
 			          });
 			        }
 			        $scope.loading = false;
-			      });
+			         });
 			    } else {
 			      $scope.loading = false;
 			    }		  
 	  }
-   
-    
-	
-	
-
-
   }
 
   $scope.logout = function() {
@@ -560,7 +565,7 @@ angular.module('openmrs.controllers', ['openmrs.services', 'ngCordova'])
     
     logout.then(function(result) {
       if(result) {
-        AuthService.logout();
+        AuthService.logout();        
         $state.transitionTo('login');
       }
     });
@@ -708,8 +713,8 @@ tobacco: $rootScope.no_value,
 hiv_test_before: $rootScope.unknown,
 cough:   $rootScope.unknown,
 fever:  $rootScope.unknown,
-do_hiv_test:  $rootScope.unknown
-
+do_hiv_test:  $rootScope.unknown,
+open_pit: $rootScope.no_value
   };
 
   $scope.patientid = ' ';
@@ -809,7 +814,7 @@ do_hiv_test:  $rootScope.unknown
 
    
    $scope.submit = function(){
-	   if (offline){		   
+	   if ( $rootScope.offline){		   
 			alert('GPS LOCATION _________ '+$scope.address.latitude + ' : '+$scope.address.longitude);
 		    $scope.submitloading = true;
 		    console.log("Phone number 2 : "+$scope.newpatient.phone2number);			
@@ -1212,9 +1217,10 @@ do_hiv_test:  $rootScope.unknown
 				        template: "<p>Patient Data Saved Offline<p/>"
 				 });
 				 
-				 $scope.submitloading = false;
-				  				
-			//	this.addNewPatientForm.reset();	
+				 $scope.submitloading = false; 
+		 
+				 			 
+			$scope.addNewPatientForm.reset();	
 				
 				
 				
@@ -1643,8 +1649,7 @@ $cordovaSQLite.execute(timsDb,queryObservation).then(function(results) {
 		     identifiers:[{identifierType:$rootScope.identifierType1,identifier:$scope.newpatient.patientid,location:$rootScope.zingcuka}],
 		     person: $scope.person
 		   };
-		     console.log("Patient JSON : "+angular.toJson($scope.patient));
-		     
+		     console.log("Patient JSON : "+angular.toJson($scope.patient));		     
 		     ApiService.createPatient(angular.toJson($scope.patient), function(res) {
 		         //start createpatient
 		       console.log("Response : "+res);

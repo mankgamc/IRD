@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 
 var timsDb = null;
-var offline = true;
+
 
 angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', 'pascalprecht.translate', 'ngCordova'])
 
@@ -26,7 +26,7 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
 	timsDb = $cordovaSQLite.openDB("timsstore.db");	
 			//Drop was mainly used during testing
 	
-			// $cordovaSQLite.execute(timsDb,"DROP TABLE IF EXISTS tbltimsLocalidentifiers;");
+			//$cordovaSQLite.execute(timsDb,"DROP TABLE IF EXISTS tbltimsLocalidentifiers;");
 			// $cordovaSQLite.execute(timsDb,"DROP TABLE IF EXISTS tbltimsLocalEncounters;");
             $cordovaSQLite.execute(timsDb, "CREATE TABLE IF NOT EXISTS tbltimsLocalidentifiers (identifierType1 text, patientid text, location text,  encountertype text, address1 text, address2 text, longitude text, latitude text,  givenName text, familyName text, age INTEGER, birthdate text, gender text," +
             "phone1number text, phone2number text, phone2_owner text, phone1_owner text, govtid text )");	
@@ -129,6 +129,8 @@ angular.module('openmrs', ['ionic', 'openmrs.controllers', 'openmrs.services', '
   $rootScope.sp_date = 'd9764ac7-e8b7-417a-ae8b-963f46130215';
   
   $rootScope.no_value = '4bc7f41f-e7f1-488d-bad4-44458a12acd3';
+  
+  $rootScope.offline = true;
   
   
   

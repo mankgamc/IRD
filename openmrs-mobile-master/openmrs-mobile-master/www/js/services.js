@@ -127,15 +127,12 @@ angular.module('openmrs.services', [])
       cache: cache,
       async: async,
       success: function(res) { 
-        res.passed = true;
-		   
+        res.passed = true;		   
         console.log(res);
         handle(res); 
       },
       error: function(res) {
         res.passed = false; 
-		//alert (res.status);
-	
         handle(res); 
       }
     });
